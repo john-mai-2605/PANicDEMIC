@@ -8,7 +8,7 @@ swear_list = ['fuck','fucks','fucked','shit','damn','suck','sucks','wtf','wth','
 
 def read_tweet(filename):
 	
-	f = open(filename, encoding="utf-16")
+	f = open(filename, encoding="utf8")
 	reader = csv.reader(f)
 	next(reader)
 	next(reader)
