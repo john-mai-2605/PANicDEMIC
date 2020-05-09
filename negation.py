@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import csv
 import random
 import numpy as np
@@ -48,6 +49,15 @@ def mark_negation(sentence, double_neg=False):
 'whether or not',
 'while'
 }
+=======
+import nltk
+import re
+nltk.download('punkt')
+def mark_negation(sentence, double_neg=False):
+  negation = {"n\'t",'no', 'not', 'none', 'never', 'nothing', 'nobody', 'nowhere',
+              'neither', 'nor', "never","nowhere"}
+  punct = re.compile(r"^[.:;!?]$")
+>>>>>>> 9c0306d911d94b14970da394dd25615915b415d3
   tokens = [word.lower() for word in nltk.word_tokenize(sentence)]
   result=[]
   neg_scope = False
@@ -58,6 +68,7 @@ def mark_negation(sentence, double_neg=False):
         result.append(1)
         continue
       else:
+<<<<<<< HEAD
         result.append(0.5)
     elif neg_scope and (punct.search(word) or (word in conjuction)):
       neg_scope = not neg_scope
@@ -67,3 +78,16 @@ def mark_negation(sentence, double_neg=False):
     else:
       result.append(1)
   return result
+=======
+        result.append(-1)
+    elif neg_scope and punct.search(word):
+      neg_scope = not neg_scope
+      result.append(1)
+    elif neg_scope and not punct.search(word):
+      result.append(-1)
+    else:
+      result.append(1)
+  return result
+
+  
+>>>>>>> 9c0306d911d94b14970da394dd25615915b415d3
