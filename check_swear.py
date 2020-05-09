@@ -57,9 +57,10 @@ def count_freq(input):
 	output = dict()
 	for i in input:
 		if i[1] in output:
-			output[i[1]] += i[3]
+			output[i[1]][0] += 1
+			output[i[1]][1] += i[3]
 		else:
-			output[i[1]] = i[3]
+			output[i[1]] = [1,i[3]]
 	return output
 
 	
@@ -95,5 +96,5 @@ print("percentage of sadness tweets with swear words: %.2f %%" % (sadness/len(ou
 
 freq = count_freq(output)
 for word in freq:
-	freq[word] = round(freq[word],2)
+	freq[word] = round(freq[word][1]/freq[word][0],2)
 print(freq)

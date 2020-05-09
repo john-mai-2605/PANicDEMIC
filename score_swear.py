@@ -6,14 +6,8 @@ import math
 from nltk.tokenize import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer as lem
 
-swear_freq = {'dick': 3.33, 'damn': 14.46, 'shit': 34.75, 'fuck': 33.1, 'wtf': 9.85, 'stupid': 12.45, 'sucks': 6.47, 'fucked': 6.8, 'suck': 2.57, 'heck': 2.04}
+score = {'shit': 0.55, 'wtf': 0.58, 'damn': 0.56, 'fucked': 0.68, 'fuck': 0.61, 'sucks': 0.65, 'stupid': 0.62, 'suck': 0.51, 'dick': 0.48, 'heck': 0.68}
 
-
-def get_score(freq):
-	output = freq.copy()
-	for i in output:
-		output[i] = round((10/output[i]),2)
-	return output
 
 def read_tweet(filename):
 	
@@ -34,7 +28,7 @@ def swear_score(tweet,score):
 	
 	mark = 0
 	
-	for swear in swear_freq:
+	for swear in score:
 		for word in token:
 			if word.lower() == swear:
 				if word.upper() == word:
@@ -43,8 +37,6 @@ def swear_score(tweet,score):
 					mark += score[swear]
 				
 	return mark
-	
-score = get_score(swear_freq)
 
 id_tweet = read_tweet('./Tweets_crosstab.csv')
 
