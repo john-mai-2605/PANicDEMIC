@@ -37,10 +37,10 @@ def swear_score(tweet,score):
 	for swear in swear_freq:
 		for word in token:
 			if word.lower() == swear:
-				if word.lower() == word:
-					mark += score[swear]
-				else:
+				if word.upper() == word:
 					mark += 2*score[swear]
+				else:
+					mark += score[swear]
 				
 	return mark
 	
