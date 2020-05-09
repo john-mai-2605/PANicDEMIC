@@ -26,14 +26,9 @@ def read_tweet(filename):
 	random.shuffle(full)
 	
 	input = full[:]
-	print("total input: %d" % len(input))
+	print("Total input: %d" % len(input))
 	
-	angry_total = 0
-	for row in input:
-		if not math.isnan(row[2]):
-			angry_total += 1
-	
-	return input,angry_total
+	return input
 	
 def check_swear(tweet):
 	token = nltk.word_tokenize(tweet)
@@ -64,7 +59,7 @@ def count_freq(input):
 	return output
 
 	
-tweet_list, angry_total = read_tweet('./Tweets_crosstab.csv')
+tweet_list = read_tweet('./Tweets_crosstab.csv')
 
 output = []
 for tweet in tweet_list:
@@ -74,8 +69,7 @@ for tweet in tweet_list:
 		info = [tweet[0],swear,emotion[0],emotion[1]]
 		output.append(info)
 			
-print("total angry: ",angry_total)
-print("total caught: ",len(output))
+print("Total caught: ",len(output))
 
 angry,fear,joy,sadness = 0,0,0,0
 
@@ -89,10 +83,10 @@ for i in output:
 	else:
 		sadness += 1
 
-print("percentage of angry tweets with swear words: %.2f %%" % (angry/len(output)*100))
-print("percentage of fear tweets with swear words: %.2f %%" % (fear/len(output)*100))
-print("percentage of joy tweets with swear words: %.2f %%" % (joy/len(output)*100))
-print("percentage of sadness tweets with swear words: %.2f %%" % (sadness/len(output)*100))
+print("Percentage of angry tweets with swear words: %.2f %%" % (angry/len(output)*100))
+print("Percentage of fear tweets with swear words: %.2f %%" % (fear/len(output)*100))
+print("Percentage of joy tweets with swear words: %.2f %%" % (joy/len(output)*100))
+print("Percentage of sadness tweets with swear words: %.2f %%" % (sadness/len(output)*100))
 
 freq = count_freq(output)
 for word in freq:
