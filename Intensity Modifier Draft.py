@@ -10,12 +10,12 @@ def isAdv(pos):
         return True
     return False
 def isAdj(pos):
-        if (pos=="JJ" or pos=="JJR" or pos=="JJT"):
+    if (pos=="JJ" or pos=="JJR" or pos=="JJT"):
         return True
     return False
 
 def isIntensityMod(word): # P(IntensityMod | word) > threshold ??
-    intModList=[very, so, slightly]
+    intModList=["very", "so", "slightly"]
     if word in intModList:
         return True
     return True
