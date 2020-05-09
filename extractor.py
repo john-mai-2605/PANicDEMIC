@@ -1,15 +1,10 @@
 import csv
 import random
-import sys
-import os
 import numpy as np
-from sklearn.metrics import accuracy_score
 from tqdm import tqdm
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import re
-import io
-from io import StringIO
 
 def get_data():
     pattern = re.compile('\W')
@@ -63,10 +58,9 @@ class FeatureExtractor:
         for bow, label in tqdm(zip(bows, labels), total=len(bows)):
             self.class_and_word_to_counts[label] += bow
 
-        # Get log_prior and log_likelihood with these. (Do not modify below three lines.)
+        # Get log_prior and log_likelihood with these.
         self.log_prior = np.log(self.get_prior())
         self.log_likelihood = np.log(self.get_likelihood_with_smoothing())
-        # self._check()
 
     def get_prior(self):
         return self.class_to_num_sentences / np.sum(self.class_to_num_sentences)
@@ -85,7 +79,7 @@ class FeatureExtractor:
       for c in range(self.num_classes):
         feature = []
         for w in range(len(self.log_likelihood[c])):
-          score = max([self.log_likelihood[c][w] - self.log_likelihood[i][w] for i in range(4)])
+          score = max([self.log_likelihood[c][w] - self.log_likelihood[i][w] for i in range(self.num_classes)])
           feature.append((w, score))
         if max_features is not None:
           feature = sorted(feature, key = lambda x: x[1], reverse = True)[:max_features]
