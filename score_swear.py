@@ -6,7 +6,7 @@ import math
 from nltk.tokenize import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer as lem
 
-swear_freq = {'shit': 63, 'fucked': 10, 'fuck': 54, 'wtf': 17, 'heck': 3, 'damn': 26, 'sucks': 10, 'stupid': 20, 'dick': 7, 'suck': 5}
+swear_freq = {'dick': 3.33, 'damn': 14.46, 'shit': 34.75, 'fuck': 33.1, 'wtf': 9.85, 'stupid': 12.45, 'sucks': 6.47, 'fucked': 6.8, 'suck': 2.57, 'heck': 2.04}
 
 
 def get_score(freq):

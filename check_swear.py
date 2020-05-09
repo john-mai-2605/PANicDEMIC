@@ -44,22 +44,22 @@ def check_swear(tweet):
 	return ''
 	
 def check_emo(tweet):
-	if tweet[2] != '':
-		return ['angry',float(tweet[2])]
-	elif tweet[2] != '':
-		return ['fear',float(tweet[2])]
-	elif tweet[2] != '':
-		return ['joy',float(tweet[2])]
+	if not math.isnan(tweet[2]):
+		return ['angry',tweet[2]]
+	elif not math.isnan(tweet[3]):
+		return ['fear',tweet[3]]
+	elif not math.isnan(tweet[4]):
+		return ['joy',tweet[4]]
 	else:
-		return ['sadness',float(tweet[2])]
+		return ['sadness',tweet[5]]
 
 def count_freq(input):
 	output = dict()
 	for i in input:
 		if i[1] in output:
-			output[i[1]] += 1
+			output[i[1]] += i[3]
 		else:
-			output[i[1]] = 1
+			output[i[1]] = i[3]
 	return output
 
 	
@@ -76,12 +76,24 @@ for tweet in tweet_list:
 print("total angry: ",angry_total)
 print("total caught: ",len(output))
 
-angry = 0
+angry,fear,joy,sadness = 0,0,0,0
+
 for i in output:
 	if i[2] == 'angry':
 		angry += 1
+	elif i[2] == 'fear':
+		fear += 1
+	elif i[2] == 'joy':
+		joy += 1
+	else:
+		sadness += 1
 
 print("percentage of angry tweets with swear words: %.2f %%" % (angry/len(output)*100))
-print("percentage of tweets with swear words in all angry comments: %.2f %%" % (len(output)/angry_total*100))
+print("percentage of fear tweets with swear words: %.2f %%" % (fear/len(output)*100))
+print("percentage of joy tweets with swear words: %.2f %%" % (joy/len(output)*100))
+print("percentage of sadness tweets with swear words: %.2f %%" % (sadness/len(output)*100))
 
-print(count_freq(output))
+freq = count_freq(output)
+for word in freq:
+	freq[word] = round(freq[word],2)
+print(freq)
