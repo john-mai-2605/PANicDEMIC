@@ -1,9 +1,7 @@
 import nltk
-from copy import deepcopy
-nltk.download('punkt')
+# nltk.download('punkt')
 # Scoring negation
 def score_negation(sentence):
-  # Quasi negative words
   negation = {"n\'t",'no', 'not', 'none', 'never', 'nothing', 'nobody', 'nowhere',
               'neither', 'nor', "never","nowhere"}
   quasi_neg = {'hardly','rarely', 'scarcely', 'seldom', 'barely', 'few', 'little'}
