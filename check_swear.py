@@ -1,6 +1,8 @@
 import csv
 import nltk
 import random
+import pandas as pd
+import math
 from nltk.tokenize import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer as lem
 
@@ -8,22 +10,30 @@ swear_list = ['fuck','fucks','fucked','shit','damn','suck','sucks','wtf','wth','
 
 def read_tweet(filename):
 	
-	f = open(filename, encoding="utf8")
-	reader = csv.reader(f)
-	next(reader)
-	next(reader)
+	reader = pd.read_csv(filename, sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
+	
+	full = []
+	id = list(reader[0])
+	text = list(reader[1])
+	angry = list(reader[2])
+	fear = list(reader[3])
+	joy = list(reader[4])
+	sadness = list(reader[5])
+	
+	for i in range(len(id)):
+		full.append([id[i],text[i],angry[i],fear[i],joy[i],sadness[i]])
+	
+	random.shuffle(full)
+	
+	input = full[:3000]
+	print("total input: %d" % len(input))
 	
 	angry_total = 0
-	list = []
-	for row in reader:
-		list.append(row)
-		if row[2] != '':
+	for row in input:
+		if not math.isnan(row[2]):
 			angry_total += 1
-		if len(list)==200:
-			break
-			
-	random.shuffle(list)
-	return [list,angry_total]
+	
+	return [input,angry_total]
 	
 def check_swear(tweet):
 	token = nltk.word_tokenize(tweet)
@@ -43,7 +53,7 @@ def check_emo(tweet):
 	else:
 		return ['sadness',float(tweet[2])]
 
-tweet_list = read_tweet('./tweet_data.csv')
+tweet_list = read_tweet('./Tweets_crosstab.csv')
 
 output = []
 for tweet in tweet_list[0]:
