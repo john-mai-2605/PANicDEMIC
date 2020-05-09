@@ -47,6 +47,7 @@ class FeatureExtractor:
 
         self.class_to_num_sentences = np.zeros(self.num_classes)
         self.class_and_word_to_counts = np.zeros((self.num_classes, self.num_vocab))
+        self.score = np.zeros((self.num_classes, self.num_vocab))
 
         self.log_prior = None
         self.log_likelihood = None
@@ -81,13 +82,15 @@ class FeatureExtractor:
         for w in range(len(self.log_likelihood[c])):
           score = max([self.log_likelihood[c][w] - self.log_likelihood[i][w] for i in range(self.num_classes)])
           feature.append((w, score))
-        if max_features is not None:
-          feature = sorted(feature, key = lambda x: x[1], reverse = True)[:max_features]
+        feature = sorted(feature, key = lambda x: x[1], reverse = True)[:max_features]
         feature_list.append(feature)
+      for c in range(self.num_classes):
+        for w, s in feature_list[c]:
+              self.score[c][w] = s
       return feature_list
 
 
-def run(test_xs=None, test_ys=None, num_samples=10000, verbose=True):
+def run(num_samples=10000, verbose=True):
     # Load the dataset
     tweets, emotions = get_data()    
     (train_xs, train_ys), (val_xs, val_ys) = data_loader(tweets, emotions, num_samples, 0.75)
@@ -113,7 +116,7 @@ def run(test_xs=None, test_ys=None, num_samples=10000, verbose=True):
     for i in range(4):
         top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
         print(top_feature)
-
+    return fe, val_xs, val_ys, count_vectorizer
 
 if __name__ == '__main__':
     run()
