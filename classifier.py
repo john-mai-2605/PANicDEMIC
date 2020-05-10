@@ -7,7 +7,7 @@ import pandas as pd
 import re
 import extractor
 ##import negation
-##import nltk
+import nltk
 
 class Classifier():
         def __init__(self, score, log_prior, num_classes = 4):
@@ -37,18 +37,22 @@ def run(num_samples = 10000, verbose = True):
 ##      negationArray = [negation.mark_negation(sent) for sent in val_xs]
         clf = Classifier(ext.score, ext.log_prior, ext.num_classes)
         # Make validation bow
+        rand1 = random.sample(data1_list, 50000)
+        rand2 = random.sample(data2_list, 50000)
         _, val_bows = extractor._create_bow(val_xs, vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
-        _, val_bows_data1 = extractor._create_bow(data1_list[:1], vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
-        _, val_bows_data2 = extractor._create_bow(data2_list[:1], vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
+        _, val_bows_data1 = extractor._create_bow(rand1, vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
+        _, val_bows_data2 = extractor._create_bow(rand2, vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
 
         # Evaluation
 ##      val_preds = clf.classify(val_xs, negationArray, count_vectorizer,ext.num_classes)
         val_data1 = clf.classify(val_bows_data1)
         val_data2 = clf.classify(val_bows_data2)
         print("____________GET RESULT FOR DATA1")
-        print(val_data1)
+        fd1 = nltk.FreqDist(val_data1)
+        print(list(fd1.items()))
         print("____________GET RESULT FOR DATA2")
-        print(val_data2)
+        fd2 = nltk.FreqDist(val_data2)
+        print(list(fd2.items()))
         val_preds = clf.classify(val_bows)
         val_accuracy = accuracy_score(val_ys, val_preds)
         if verbose:
