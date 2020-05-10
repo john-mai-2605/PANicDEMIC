@@ -8,7 +8,7 @@ import re
 
 def get_data():
     pattern = re.compile('\W')
-    df = pd.read_csv("./2020-03-28 Coronavirus Tweets.CSV/2020-03-28 Coronavirus Tweets.CSV", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
+    df = pd.read_csv("Tweets_crosstab.csv", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
     # Dataset is now stored in a Pandas Dataframe
     anger_feats = list(df[1][df[2].notnull()])
     fear_feats = list(df[1][df[3].notnull()])

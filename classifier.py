@@ -25,7 +25,7 @@ class Classifier():
 				score_feat = [self.score[numClass][id_] if id_ != 'UNK' else 0 for id_ in word2id] 
 				scoreList.append(score_feat)
 			final_score = [np.sum(np.multiply(score_feat, np.multiply(negationArray[i],intensityArray[i]))) for score_feat in scoreList]
-			if(i%700==3):
+			if(i%700==3 and False):
 				print(sent,end="\n    Score Array : ")
 				print(scoreList,end="\nIntensity array : ")
 				print(intensityArray[i],end="\n Negation array : ")
@@ -35,7 +35,7 @@ class Classifier():
 		return np.asarray(labels)
 def run(num_samples = 10000, verbose = True):
 	# Extract features
-	ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=False)	
+	ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=True)	
 	negationArray = [negation.mark_negation(sent) for sent in val_xs]
 	intensityScoreArray = [intensity.intensityScores(sent) for sent in val_xs]
 	clf = Classifier(ext.score, ext.log_prior, ext.num_classes)
