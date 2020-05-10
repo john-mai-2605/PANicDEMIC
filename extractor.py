@@ -8,7 +8,7 @@ import re
 
 def get_data():
     pattern = re.compile('\W')
-    df = pd.read_csv("Tweets_crosstab.csv", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
+    df = pd.read_csv("./2020-03-28 Coronavirus Tweets.CSV/2020-03-28 Coronavirus Tweets.CSV", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
     # Dataset is now stored in a Pandas Dataframe
     anger_feats = list(df[1][df[2].notnull()])
     fear_feats = list(df[1][df[3].notnull()])
@@ -113,9 +113,10 @@ def run(num_samples=10000, verbose=True):
       id2word[id] = w
     # Extract features
     feature_list = fe.feature_extract(100)
-    for i in range(4):
-        top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
-        print(top_feature)
+    if verbose:
+        for i in range(4):
+            top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
+            print(top_feature)
     return fe, val_xs, val_ys, count_vectorizer
 
 if __name__ == '__main__':

@@ -1,9 +1,9 @@
 import nltk
 from nltk.corpus import wordnet as wn
-targetText = []
 
-undesiredAdver=['by', 'across', 'around', 'but', 'between', 'on', 'over', 'after','forth','behind','together','under','about','so','through','inward','forward']
-wierdlyNoun=['I', 'a', 'an', 'as', 'at', 'by', 'he', 'his', 'me', 'or', 'thou', 'us', 'who']
+
+#undesiredAdver=['by', 'across', 'around', 'but', 'between', 'on', 'over', 'after','forth','behind','together','under','about','so','through','inward','forward']
+#wierdlyNoun=['I', 'a', 'an', 'as', 'at', 'by', 'he', 'his', 'me', 'or', 'thou', 'us', 'who']
 
 def isAdv(pos):
     if (pos=="RB" or pos=="RBT" or pos=="RBR"):
@@ -14,27 +14,40 @@ def isAdj(pos):
         return True
     return False
 
-def isIntensityMod(word): # P(IntensityMod | word) > threshold ??
-    intModList=["very", "so", "slightly"]
-    if word in intModList:
+def isIntensify(word): 
+    intenseList=["very", "so","really","fucking","too","'too","well","severe","extremely","desperatily","dearly"]
+    if word in intenseList:
         return True
-    return True
+    return False
+
+def isDiminish(word):
+    diminishList=["slightly", "bit","little"]
+    if word in diminishList:
+        return True
+    return False
 
 def score(word):
     scorePresets={(very,0.9),(slightly,0.2),(overwhelmingly,1)}
     return 1
-"""
-Is this how Naive Bayes works?
-Event1(very):Score=S1 | E2(slightly):S2 | E(so):S3 | E(overwhelmingly):S4
+
+def intensityScores(tweet):
+    targetText=nltk.Text([w.lower() for w in nltk.word_tokenize(tweet)])
+    tags=nltk.pos_tag(targetText)
+    textLen=len(tags)
+    result=[1 for i in range(len(tags))]
     
-P(KnownEevent1|unknown)=P1            #P("very"|"mostly") or P("very"|"really")
-P(KnownEevent2|unknown)=P2
-...
-
-score = (P1*S1+P2*S2+...)/(P1+P2+...)
-??
+    for i in range(textLen-1):
+        w=tags[i][0]
+        wTag=tags[i][1]
+        #if((isAdv(wTag) or isAdj(wTag)) and isIntensify(w)):
+        if(isIntensify(w)):
+            result[i+1]=result[i]*2
+        #elif ((isAdv(wTag) or isAdj(wTag)) and isDiminish(w)):
+        elif (isDiminish(w)):
+            result[i+1]=result[i]/2
+    return result
+       
 """
-
 emotionWords=[]
 tags=nltk.pos_tag(targetText)
 textLen=len(targetText)
@@ -62,3 +75,4 @@ for w in emotionWords:
         invTag=tags[location+1][1]
         if (isAdv(invTag) or isAdj(invTag)) and isIntensityMod(investigate):
             score(investigate)
+"""
