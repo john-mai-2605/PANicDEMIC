@@ -1,21 +1,69 @@
+import csv
+import random
+import numpy as np
+from tqdm import tqdm
+from sklearn.metrics import accuracy_score
+import pandas as pd
+import re
+import extractor
 import nltk
-# nltk.download('punkt')
-# Scoring negation
-def score_negation(sentence):
+import re
+def mark_negation(sentence, double_neg=False):
   negation = {"n\'t",'no', 'not', 'none', 'never', 'nothing', 'nobody', 'nowhere',
               'neither', 'nor', "never","nowhere"}
-  quasi_neg = {'hardly','rarely', 'scarcely', 'seldom', 'barely', 'few', 'little'}
-  neg_implication = {'fail', 'without', 'beyond', 'until', 'unless', 'lest', 
-                    'ignorant', 'refuse', 'neglect', 'absence',
-                    'instead of','despite','uh-uh'}
+  punct = re.compile(r"^[.:;,!?]$")
+  conjuction = {'after','although',
+'as','as if','as long as',
+'as much as',
+'as soon as',
+'as though',
+'because',
+'before',
+'by the time',
+'even if',
+'even though',
+'if',
+'in order that',
+'in case',
+'in the event that',
+'lest',
+'now that',
+'once',
+'only',
+'only if',
+'provided that',
+'since',
+'so',
+'supposing',
+'that',
+'than',
+'though',
+'till',
+'unless',
+'until', 'when',
+'whenever',
+'where',
+'whereas',
+'wherever',
+'whether or not',
+'while'
+}
   tokens = [word.lower() for word in nltk.word_tokenize(sentence)]
-  print(tokens)
-  result_score= []
-  for word in tokens:
-    if (word in negation) or (word in neg_implication):
-      result_score.append(-1)
-    elif word in quasi_neg:
-      result_score.append(0.5)
+  result=[]
+  neg_scope = False
+  for i,word in enumerate(tokens):
+    if word in negation:
+      if not neg_scope or (neg_scope and double_neg):
+        neg_scope = not neg_scope
+        result.append(1)
+        continue
+      else:
+        result.append(0.5)
+    elif neg_scope and (punct.search(word) or (word in conjuction)):
+      neg_scope = not neg_scope
+      result.append(1)
+    elif neg_scope and not (punct.search(word) or (word in conjuction)):
+      result.append(0.5)
     else:
-      result_score.append(1)
-  return result_score
+      result.append(1)
+  return result

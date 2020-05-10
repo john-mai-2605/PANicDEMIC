@@ -1,0 +1,34 @@
+#############################################
+def isAdv(pos):
+    if (pos=="RB" or pos=="RBT" or pos=="RBR"):
+        return True
+    return False
+def isAdj(pos):
+    if (pos=="JJ" or pos=="JJR" or pos=="JJT"):
+        return True
+    return False
+
+def isIntensityMod(word): # P(IntensityMod | word) > threshold ??
+    intModList=["very", "so", "slightly"]
+    if word in intModList:
+        return True
+    return True
+
+
+
+if __name__ == '__main__':
+    (fe,tweets,emotion,cv)=run()
+    tweetToken=TweetTokenizer()
+    targetText = nltk.Text(tweetToken.tokenize("\n".join(tweets).lower()))
+    tags=nltk.pos_tag(targetText)
+    result=[1 for i in range(len(tags))]
+    for i in range(len(targetText)):
+        w=tags[i][0]
+        wTag=tags[i][1]
+        if ((isAdv(wTag) or isAdj(wTag)) and isIntensify(w)):
+            result[i+1]=result[i]*2
+        elif ((isAdv(wTag) or isAdj(wTag)) and isDeminish(w)):
+            result[i+1]=result[i]/2
+    for i in range((len(targetText)//10)//20):
+        print(targetText[i*10:i*10+9])
+        print(result[i*10:i*10+9])
