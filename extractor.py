@@ -8,15 +8,12 @@ import re
 
 def get_data():
     pattern = re.compile('\W')
+    dates = ["2020-03-00 Coronavirus Tweets (pre 2020-03-12).csv","2020-03-12 Coronavirus Tweets.csv","2020-03-15 Coronavirus Tweets.csv","2020-03-20 Coronavirus Tweets.csv","2020-03-25 Coronavirus Tweets.csv","2020-03-28 Coronavirus Tweets.csv" ]
     df = pd.read_csv("Tweets_crosstab.csv", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
-    df1 = pd.read_csv("2020-03-00 Coronavirus Tweets (pre 2020-03-12).csv", header=None, engine='python', skiprows=1, encoding = "utf-8")
-    df2 = pd.read_csv("2020-03-28 Coronavirus Tweets.csv", header=None, engine='python', skiprows=1, encoding = "utf-8")
-
-    data1_list = list(df1[4][df1[21] == 'en'])
-    data2_list = list(df2[4][df2[21] == 'en'])
-
-    print("_____________ FIRST DATA")
-    print(data1_list[:5])
+    data_list = []
+    for date in dates:
+        data_list.append(pd.read_csv(date, header=None, engine='python', skiprows=1, encoding = "utf-8"))
+    data = map(lambda df: list(df[4][df[21] == 'en']), data_list)
     # Dataset is now stored in a Pandas Dataframe
     anger_feats = list(df[1][df[2].notnull()])
     fear_feats = list(df[1][df[3].notnull()])
@@ -26,7 +23,7 @@ def get_data():
     tweets = anger_feats + fear_feats + joy_feats + sadness_feats
     emotions = [0 for f in anger_feats] + [1 for f in fear_feats] + [2 for f in joy_feats] + [3 for f in sadness_feats]
 
-    return tweets, emotions, data1_list, data2_list
+    return tweets, emotions, data
 
 def data_loader(tweets, emotions, num_samples, train_test_ratio = 0.75):
     # Data shuffle
@@ -100,7 +97,7 @@ class FeatureExtractor:
 
 def run(num_samples=10000, verbose=True):
     # Load the dataset
-    tweets, emotions, data1_list, data2_list = get_data()
+    tweets, emotions, data = get_data()
     (train_xs, train_ys), (val_xs, val_ys) = data_loader(tweets, emotions, num_samples, 0.75)
     if verbose:
         print("\n[Example of xs]: [\"{}...\", \"{}...\", ...]\n[Example of ys]: [{}, {}, ...]".format(
@@ -124,7 +121,7 @@ def run(num_samples=10000, verbose=True):
     for i in range(4):
         top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
         print(top_feature)
-    return fe, val_xs, val_ys, count_vectorizer, data1_list, data2_list
+    return fe, val_xs, val_ys, count_vectorizer, data
 
 if __name__ == '__main__':
     run()
