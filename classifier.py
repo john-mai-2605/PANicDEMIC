@@ -30,39 +30,20 @@ class Classifier():
                 for bow in tqdm(bows):
                         log_posterior = self.log_prior + np.sum(self.score * bow, axis=1)
                         labels.append(np.argmax(log_posterior))
-                return np.asarray(labels)       
+                return np.asarray(labels)
+
+
+    
 def run(num_samples = 10000, verbose = False):
         # Extract features
-        ext, val_xs, val_ys, count_vectorizer, data = extractor.run() 
+        ext, val_xs, val_ys, count_vectorizer = extractor.run() 
 ##      negationArray = [negation.mark_negation(sent) for sent in val_xs]
         clf = Classifier(ext.score, ext.log_prior, ext.num_classes)
         # Make validation bow
-        val_bows_list = []
-        for i in data:
-                _, val_bow_data = extractor._create_bow(random.sample(i, 50000), vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
-                val_bows_list.append(val_bow_data)
-##        rand1 = random.sample(data1_list, 50000)
-##        rand2 = random.sample(data2_list, 50000)
-        _, val_bows = extractor._create_bow(val_xs, vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
-##        _, val_bows_data1 = extractor._create_bow(rand1, vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
-##        _, val_bows_data2 = extractor._create_bow(rand2, vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
+        _, val_bows, sent = extractor._create_bow(val_xs, vectorizer=count_vectorizer, msg_prefix="\n[Validation]")
 
         # Evaluation
 ##      val_preds = clf.classify(val_xs, negationArray, count_vectorizer,ext.num_classes)
-        val_data_list = map(lambda x: clf.classify(x), val_bows_list)
-##        val_data1 = clf.classify(val_bows_data1)
-##        val_data2 = clf.classify(val_bows_data2)
-        result_data= []
-        for i in val_data_list:
-                fd = nltk.FreqDist(i)
-                result_data.append(list(fd.items()))
-##        print("____________GET RESULT FOR DATA1")
-##        fd1 = nltk.FreqDist(val_data1)
-##        print(list(fd1.items()))
-##        print("____________GET RESULT FOR DATA2")
-##        fd2 = nltk.FreqDist(val_data2)
-##        print(list(fd2.items()))
-        print(result_data)
         val_preds = clf.classify(val_bows)
         val_accuracy = accuracy_score(val_ys, val_preds)
         if verbose:
