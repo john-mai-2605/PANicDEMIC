@@ -17,7 +17,7 @@ def get_data():
 
     tweets = anger_feats + fear_feats + joy_feats + sadness_feats
     emotions = [0 for f in anger_feats] + [1 for f in fear_feats] + [2 for f in joy_feats] + [3 for f in sadness_feats]
-    
+
     return tweets, emotions
 
 def data_loader(tweets, emotions, num_samples, train_test_ratio = 0.75):
@@ -38,7 +38,7 @@ def _create_bow(sentences, vectorizer=None, msg_prefix="\n"):
         sentence_vectors = vectorizer.fit_transform(sentences)
     else:
         sentence_vectors = vectorizer.transform(sentences)
-    return vectorizer, sentence_vectors.toarray()
+    return vectorizer, sentence_vectors.toarray(), sentences
 
 class FeatureExtractor:
     def __init__(self, num_vocab, num_classes):
@@ -90,16 +90,16 @@ class FeatureExtractor:
       return feature_list
 
 
-def run(num_samples=10000, verbose=True):
+def run(num_samples=10000, verbose=False):
     # Load the dataset
-    tweets, emotions = get_data()    
+    tweets, emotions = get_data()
     (train_xs, train_ys), (val_xs, val_ys) = data_loader(tweets, emotions, num_samples, 0.75)
     if verbose:
         print("\n[Example of xs]: [\"{}...\", \"{}...\", ...]\n[Example of ys]: [{}, {}, ...]".format(
             train_xs[0][:70], train_xs[1][:70], train_ys[0], train_ys[1]))
         print("\n[Num Train]: {}\n[Num Test]: {}".format(len(train_ys), len(val_ys)))
     # Create bow representation of train set
-    count_vectorizer, train_bows = _create_bow(train_xs, msg_prefix="\n[Train]")
+    count_vectorizer, train_bows, _ = _create_bow(train_xs, msg_prefix="\n[Train]")
     counted = len(count_vectorizer.get_feature_names())
     if verbose:
         print("\n[Vocab]: {} words".format(counted))
@@ -113,10 +113,9 @@ def run(num_samples=10000, verbose=True):
       id2word[id] = w
     # Extract features
     feature_list = fe.feature_extract(100)
-    if verbose:
-        for i in range(4):
-            top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
-            print(top_feature)
+    for i in range(4):
+        top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
+        print(top_feature)
     return fe, val_xs, val_ys, count_vectorizer
 
 if __name__ == '__main__':
