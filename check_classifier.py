@@ -17,10 +17,8 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
         # the list avoid contains manual filtering data
         avoid = ['...',"n't",'https']
         # the list dates contain the path of the tweets' files
-        
-                
         #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv","../2020-04-24 Coronavirus Tweets.csv" ]
-        dates = ["../2020-04-{0} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
+        dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
         data_list = []
 
         for date in dates:
