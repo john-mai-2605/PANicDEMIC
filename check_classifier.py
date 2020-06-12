@@ -19,8 +19,20 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
         avoid = ['...',"n't",'https']
 
         # the list dates contain the path of the tweets' files
+        
+        # original
         #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
-        dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
+
+        # April 16~30
+        #dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
+
+        # April 01~15
+        #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])
+
+        # April overall
+        dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
+                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
+                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
 
         data_list = []
         for date in dates:
@@ -97,7 +109,7 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
             ax = fig.add_subplot(1, 1, 1)
             kcl = KMeansClusterer(5, nltk.cluster.util.cosine_distance, repeats = 50)
             Labels = kcl.cluster(vecs, assign_clusters=True)
-            ax.scatter(df['x'], df['y'], s=10, c=Labels)  
+            ax.scatter(df['x'], df['y'], s=40, c=Labels)  
             for word, pos in df.iterrows():
                 ax.annotate(word, pos, fontsize=10) 
          
