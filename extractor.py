@@ -118,6 +118,7 @@ def run(num_samples=10000, verbose=False):
     feature_list = fe.feature_extract(100)
     for i in range(4):
         top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
+
         if verbose:
         	print(top_feature)
         	feat_dict = dict([(feat[0], np.exp(feat[1])) for feat in top_feature])
@@ -126,7 +127,7 @@ def run(num_samples=10000, verbose=False):
         	# Display the generated image:
         	plt.imshow(wordcloud, interpolation='bilinear')
         	plt.axis("off")
-        	plt.show()        	
+        	plt.show()        
     return fe, val_xs, val_ys, count_vectorizer
 
 if __name__ == '__main__':

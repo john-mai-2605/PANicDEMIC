@@ -39,7 +39,9 @@ class Classifier():
 
 def run(num_samples = 10000, verbose = False):
         # Extract features
+
         ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose = verbose, num_samples = num_samples)
+
 ##      negationArray = [negation.mark_negation(sent) for sent in val_xs]
         clf = Classifier(ext.score, ext.log_prior, ext.num_classes)
         # Make validation bow
@@ -49,9 +51,11 @@ def run(num_samples = 10000, verbose = False):
 ##      val_preds = clf.classify(val_xs, negationArray, count_vectorizer,ext.num_classes)
         val_preds, val_scores = clf.classify(val_bows)
         val_accuracy = accuracy_score(val_ys, val_preds)
+
         val_cm = confusion_matrix(val_ys, val_preds)        
         print("\n[Validation] Accuracy: {}".format(val_accuracy))
         print("\n[Validation] Confusion matrix: \n{}".format(val_cm))
+
 
 if __name__ == '__main__':
     run()
