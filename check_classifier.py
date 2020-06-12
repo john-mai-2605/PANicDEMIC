@@ -13,11 +13,14 @@ from nltk.cluster import KMeansClusterer
 from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt 
-def run(num_samples = 300, num_sentences = 10, verbose = False):
+def run(num_samples = 30000, num_sentences = 10, verbose = False):
         # the list avoid contains manual filtering data
         avoid = ['...',"n't",'https']
         # the list dates contain the path of the tweets' files
-        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv" ]
+        
+                
+        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv","../2020-04-24 Coronavirus Tweets.csv" ]
+        dates = ["../2020-04-{0} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
         data_list = []
 
         for date in dates:
@@ -96,7 +99,7 @@ def run(num_samples = 300, num_sentences = 10, verbose = False):
             Labels = kcl.cluster(vecs, assign_clusters=True)
             ax.scatter(df['x'], df['y'], s=10, c=Labels)  
             for word, pos in df.iterrows():
-                ax.annotate(word, pos, fontsize=5) 
+                ax.annotate(word, pos, fontsize=10) 
          
             for j in range(10):
                 for i in range(len(vecs)):
