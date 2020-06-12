@@ -5,7 +5,10 @@ from tqdm import tqdm
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 import re
-
+from os import path
+from PIL import Image
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+import matplotlib.pyplot as plt
 def get_data():
     pattern = re.compile('\W')
     df = pd.read_csv("Tweets_crosstab.csv", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
@@ -115,7 +118,16 @@ def run(num_samples=10000, verbose=False):
     feature_list = fe.feature_extract(100)
     for i in range(4):
         top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
-        print(top_feature)
+
+        if verbose:
+        	print(top_feature)
+        	feat_dict = dict([(feat[0], np.exp(feat[1])) for feat in top_feature])
+        	wordcloud = WordCloud(max_font_size=50)
+        	wordcloud.generate_from_frequencies(feat_dict)
+        	# Display the generated image:
+        	plt.imshow(wordcloud, interpolation='bilinear')
+        	plt.axis("off")
+        	plt.show()        
     return fe, val_xs, val_ys, count_vectorizer
 
 if __name__ == '__main__':
