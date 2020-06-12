@@ -13,17 +13,24 @@ from nltk.cluster import KMeansClusterer
 from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt 
-def run(num_samples = 30000, num_sentences = 10, verbose = False):
+def run(num_samples = 300, num_sentences = 10, verbose = False):
+        # the list avoid contains manual filtering data
         avoid = ['...',"n't",'https']
+        # the list dates contain the path of the tweets' files
         dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv" ]
         data_list = []
+
         for date in dates:
                 data_list.append(pd.read_csv(date, header=None, engine='python', skiprows=1, encoding = "utf-8"))
-                data = map(lambda df: list(df[4][df[21] == 'en']), data_list)
-       
+        data = map(lambda df: list(df[4][df[21] == 'en']), data_list)
+        # map(fun, iterable) returns function returns a map object(an iterator) of the results
+        # after applying the given function to each item of a given iterable
+
+        # val here means validation set. val_x means the validation tweet
+        # and val_y means the validated emotion for the val_x(tweet)
         ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose)
         clf = classifier.Classifier(ext.score, ext.log_prior, ext.num_classes)
-        # Make validation bow
+        # Make validation bow(bag of words)
         val_bows_list = []
         random.seed(10)
         for i in data:
@@ -97,7 +104,7 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
                         print(words[i])
                 print("\n")
             plt.show()        
-     
+
 
 if __name__ == '__main__':
     run(verbose = False)
