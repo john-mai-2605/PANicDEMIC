@@ -14,13 +14,15 @@ from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt 
 def run(num_samples = 30000, num_sentences = 10, verbose = False):
+
         # the list avoid contains manual filtering data
         avoid = ['...',"n't",'https']
-        # the list dates contain the path of the tweets' files
-        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv","../2020-04-24 Coronavirus Tweets.csv" ]
-        dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
-        data_list = []
 
+        # the list dates contain the path of the tweets' files
+        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+        dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
+
+        data_list = []
         for date in dates:
                 data_list.append(pd.read_csv(date, header=None, engine='python', skiprows=1, encoding = "utf-8"))
         data = map(lambda df: list(df[4][df[21] == 'en']), data_list)
@@ -104,8 +106,7 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
                     if Labels[i] == j:
                         print(words[i])
                 print("\n")
-            plt.show()        
-
+            plt.show()      
 
 if __name__ == '__main__':
     run(verbose = False)
