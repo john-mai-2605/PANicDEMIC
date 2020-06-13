@@ -13,7 +13,7 @@ from nltk.cluster import KMeansClusterer
 from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt 
-def run(num_samples = 10000, num_sentences = 10, verbose = False):
+def run(num_samples = 30000, num_sentences = 10, verbose = False):
 
         # the list "avoid" contains manual filtering data
         avoid = ['...',"n't",'https']
@@ -21,13 +21,13 @@ def run(num_samples = 10000, num_sentences = 10, verbose = False):
         # the list "dates" contain the path of the tweets' files
         
         # original
-        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
 
         # April 16~30
         #dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
 
         # April 01~15
-        #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])
+        dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])
 
         # April overall Sun/Wed
         #dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
@@ -134,7 +134,7 @@ def run(num_samples = 10000, num_sentences = 10, verbose = False):
                 else:
                         colors.append("k")
                             
-            ax.scatter(df['x'], df['y'],marker=6, s=250, c=colors)
+            ax.scatter(df['x'], df['y'],marker=6, s=270, c=colors)
             titlei=titlei+1
             for word, pos in df.iterrows():
                 ax.annotate(word, pos, fontsize=12) 
