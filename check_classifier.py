@@ -13,15 +13,15 @@ from nltk.cluster import KMeansClusterer
 from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt 
-def run(num_samples = 30000, num_sentences = 10, verbose = False):
+def run(num_samples = 10000, num_sentences = 10, verbose = False):
 
-        # the list avoid contains manual filtering data
+        # the list "avoid" contains manual filtering data
         avoid = ['...',"n't",'https']
 
-        # the list dates contain the path of the tweets' files
+        # the list "dates" contain the path of the tweets' files
         
         # original
-        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
 
         # April 16~30
         #dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
@@ -30,9 +30,9 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
         #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])
 
         # April overall Sun/Wed
-        dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
-                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
-                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
+        #dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
+        #        +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
+        #        +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
 
 
         # April overall Mon/Thu
@@ -78,22 +78,22 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
         check_list = list(zip(val_data_list[0][0], val_data_list[0][1], val_data_list[0][2]))
         check_anger = sorted([item for item in check_list if item[0] == 0],key=lambda x:x[1],reverse=True)
         print("ANGER:", len(check_anger))
-        for i in check_anger[:len(check_anger)//100]:
+        for i in check_anger[:len(check_anger)//200]:
             print(i)
 
         #print(fearCFD.most_common(150))
         check_joy = sorted([item for item in check_list if item[0] == 2],key=lambda x:x[1],reverse=True)
         print("JOY:", len(check_joy))
-        for i in check_joy[:len(check_joy)//100]:
+        for i in check_joy[:len(check_joy)//200]:
             print(i)
                 
         check_sadness = sorted([item for item in check_list if item[0] == 3],key=lambda x:x[1],reverse=True)
         print("SADNESS:", len(check_sadness))
-        for i in check_sadness[:len(check_sadness)//100]:
+        for i in check_sadness[:len(check_sadness)//200]:
             print(i)
         check_fear = sorted([item for item in check_list if item[0] == 1], key=lambda x:x[1],reverse=True)
         print("FEAR:", len(check_fear))
-        for i in check_fear[:len(check_fear)//100]:
+        for i in check_fear[:len(check_fear)//200]:
             print(i)
         model = Word2Vec([nltk.word_tokenize(twt[2].lower()) for twt in check_fear+check_sadness+check_joy+check_anger], size=50, workers=4, iter = 10)
 
@@ -114,12 +114,28 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
             vecs_tsne = tsne.fit_transform(vecs)
             df = pd.DataFrame(vecs_tsne, index=words, columns=['x', 'y'])
             fig = plt.figure()
-            fig.suptitle(title[titlei],fontsize=20)
-            titlei=titlei+1
+            fig.suptitle("Word Cluster per Emotion",fontsize=20)
             ax = fig.add_subplot(1, 1, 1)
+            ax.title.set_text(title[titlei])
             kcl = KMeansClusterer(5, nltk.cluster.util.cosine_distance, repeats = 50)
             Labels = kcl.cluster(vecs, assign_clusters=True)
-            ax.scatter(df['x'], df['y'], s=100, c=Labels)  
+            colors = []
+            for i in Labels:
+                if (i==0):
+                        colors.append("r")
+                elif (i==1):
+                        colors.append("g")
+                elif (i==2):
+                        colors.append("y")
+                elif (i==3):
+                        colors.append("c")
+                elif (i==4):
+                        colors.append("m")
+                else:
+                        colors.append("k")
+                            
+            ax.scatter(df['x'], df['y'],marker=6, s=250, c=colors)
+            titlei=titlei+1
             for word, pos in df.iterrows():
                 ax.annotate(word, pos, fontsize=12) 
          
