@@ -99,7 +99,7 @@ def run(num_samples = 10000, num_sentences = 10, verbose = False):
 
         checks = [check_fear, check_sadness, check_joy, check_anger]
 
-        title = ["fear", "sadness", "joy", "anger"]
+        title = ["Fear", "Sadness", "Joy", "Anger"]
         titlei =0
         for check in checks:
             Words =[]
@@ -114,7 +114,7 @@ def run(num_samples = 10000, num_sentences = 10, verbose = False):
             vecs_tsne = tsne.fit_transform(vecs)
             df = pd.DataFrame(vecs_tsne, index=words, columns=['x', 'y'])
             fig = plt.figure()
-            fig.suptitle("Word Cluster per Emotion",fontsize=20)
+            fig.suptitle("Word Cluster for {}".format(title[titlei]),fontsize=25)
             ax = fig.add_subplot(1, 1, 1)
             ax.title.set_text(title[titlei])
             kcl = KMeansClusterer(5, nltk.cluster.util.cosine_distance, repeats = 50)
