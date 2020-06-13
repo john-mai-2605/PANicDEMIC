@@ -27,7 +27,7 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
         #dates = ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31)]
 
         # April 01~15
-        dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])
+        #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])
 
         # April overall Sun/Wed
         #dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
@@ -36,9 +36,9 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False):
 
 
         # April overall Mon/Thu
-        #dates = (["../2020-03-30 Coronavirus Tweets.csv","../2020-04-02 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-09 Coronavirus Tweets.csv"]
-        #         +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(13,31,7)]
-        #         +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)])
+        dates = (["../2020-03-30 Coronavirus Tweets.csv","../2020-04-02 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-09 Coronavirus Tweets.csv"]
+                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(13,31,7)]
+                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)])
 
         data_list = []
         for date in dates:
