@@ -12,18 +12,3 @@ Extractor: return scored features based on Bayesian posterior probability
 
 Model: bag-of-word, Tf-idf vectorization
 
-### Swear words
-* fuck
-* fucks
-* fucked
-* fuckin
-* fucking
-* damn
-* shit
-* suck
-* sucks
-* wtf
-* wth
-* stupid
-* dick
-* heck
