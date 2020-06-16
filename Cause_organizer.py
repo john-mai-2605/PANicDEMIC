@@ -43,97 +43,99 @@ def excommon2(a,b,com3s): # if i in common(a,b) and not in 3commons+allcommon
         if i not in com3s:
             xcommon2.append(i)
     return xcommon2
+def feature_extractor():
+    combined=anger+fear+joy+sadness
+    com4=common4(anger,fear,joy,sadness)
+    print("Common for all")
+    for i in com4:
+        print(i,end=", ")
+    cmAFJ=excommon3(anger,fear,joy,com4)
+    cmAFS=excommon3(anger,fear,sadness,com4)
+    cmAJS=excommon3(anger,joy,sadness,com4)
+    cmFJS=excommon3(fear,joy,sadness,com4)
+    com3s=list(set(cmAFJ+cmAFS+cmAJS+cmFJS+com4))
+    print()
+    print()
+    print("Exclusively common to A,F,J")
+    for i in cmAFJ:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to A,F,S")
+    for i in cmAFS:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to A,J,S")
+    for i in cmAJS:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to F,J,S")
+    for i in cmFJS:
+        print(i,end=", ")
+    cmAF=excommon2(anger,fear,com3s)
+    cmAJ=excommon2(anger,joy,com3s)
+    cmAS=excommon2(anger,sadness,com3s)
+    cmFJ=excommon2(fear,joy,com3s)
+    cmFS=excommon2(fear,sadness,com3s)
+    cmJS=excommon2(joy,sadness,com3s)
+    cm=list(set(cmAF+cmAJ+cmAS+cmFJ+cmFS+cmJS))
+    xA=excommon2(anger,anger,com3s+cm)
+    xF=excommon2(fear,fear,com3s+cm)
+    xJ=excommon2(joy,joy,com3s+cm)
+    xS=excommon2(sadness,sadness,com3s+cm)
+    print()
+    print()
+    print("Exclusively common to A,F")
+    for i in cmAF:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to A,J")
+    for i in cmAJ:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to A,S")
+    for i in cmAS:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to F,J")
+    for i in cmFJ:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to F,S")
+    for i in cmFS:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively common to J,S")
+    for i in cmJS:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively Anger")
+    for i in xA:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively Fear")
+    for i in xF:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively Joy")
+    for i in xJ:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively Sadness")
+    for i in xS:
+        print(i,end=", ")
+    return xA, xF, xJ, xS
 
-combined=anger+fear+joy+sadness
-com4=common4(anger,fear,joy,sadness)
-print("Common for all")
-for i in com4:
-    print(i,end=", ")
-cmAFJ=excommon3(anger,fear,joy,com4)
-cmAFS=excommon3(anger,fear,sadness,com4)
-cmAJS=excommon3(anger,joy,sadness,com4)
-cmFJS=excommon3(fear,joy,sadness,com4)
-com3s=list(set(cmAFJ+cmAFS+cmAJS+cmFJS+com4))
-print()
-print()
-print("Exclusively common to A,F,J")
-for i in cmAFJ:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to A,F,S")
-for i in cmAFS:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to A,J,S")
-for i in cmAJS:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to F,J,S")
-for i in cmFJS:
-    print(i,end=", ")
-cmAF=excommon2(anger,fear,com3s)
-cmAJ=excommon2(anger,joy,com3s)
-cmAS=excommon2(anger,sadness,com3s)
-cmFJ=excommon2(fear,joy,com3s)
-cmFS=excommon2(fear,sadness,com3s)
-cmJS=excommon2(joy,sadness,com3s)
-cm=list(set(cmAF+cmAJ+cmAS+cmFJ+cmFS+cmJS))
-xA=excommon2(anger,anger,com3s+cm)
-xF=excommon2(fear,fear,com3s+cm)
-xJ=excommon2(joy,joy,com3s+cm)
-xS=excommon2(sadness,sadness,com3s+cm)
-print()
-print()
-print("Exclusively common to A,F")
-for i in cmAF:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to A,J")
-for i in cmAJ:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to A,S")
-for i in cmAS:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to F,J")
-for i in cmFJ:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to F,S")
-for i in cmFS:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively common to J,S")
-for i in cmJS:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively Anger")
-for i in xA:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively Fear")
-for i in xF:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively Joy")
-for i in xJ:
-    print(i,end=", ")
-print()
-print()
-print("Exclusively Sadness")
-for i in xS:
-    print(i,end=", ")
-
-
+if __name__ == '__main__':
+    feature_extractor()
