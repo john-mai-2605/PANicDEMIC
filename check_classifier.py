@@ -105,6 +105,7 @@ def run(num_samples = 10000, num_sentences = 10, verbose = False):
 
         title = ["Fear", "Sadness", "Joy", "Anger"]
         titlei =0
+        result=[]
         for check in checks:
             Words =[]
             for twt in check:
@@ -141,14 +142,16 @@ def run(num_samples = 10000, num_sentences = 10, verbose = False):
             ax.scatter(df['x'], df['y'],marker=6, s=270, c=colors)
             titlei=titlei+1
             for word, pos in df.iterrows():
-                ax.annotate(word, pos, fontsize=12) 
-         
-            for j in range(10):
-                for i in range(len(vecs)):
-                    if Labels[i] == j:
-                        print(words[i])
-                print("\n")
-            plt.show()      
+                ax.annotate(word, pos, fontsize=10) 
+            if(verbose):        
+                for j in range(5):          
+                    for i in range(len(vecs)):
+                        if Labels[i] == j:
+                            print(words[i])
+                    print("\n")
+                plt.show()
+            result.append(words)
+        return result
 
 if __name__ == '__main__':
     run(verbose = False)
