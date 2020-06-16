@@ -35,13 +35,29 @@ class Classifier():
                         scores.append(np.max(log_posterior))
                 return np.asarray(labels), np.asarray(scores)
 
+def read_data():
+    pattern = re.compile('\W')
+    anger_df = pd.read_csv("result_anger.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
+    fear_df = pd.read_csv("result_fear.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
+    joy_df = pd.read_csv("result_joy.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
+    sadness_df = pd.read_csv("result_sadness.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
+    # Dataset is now stored in a Pandas Dataframe
+    anger_feats = list(anger_df[1])
+    fear_feats = list(fear_df[1])
+    joy_feats = list(joy_df[1])
+    sadness_feats = list(sadness_df[1])
 
+    tweets = anger_feats + fear_feats + joy_feats + sadness_feats
+    emotions = [0 for f in anger_feats] + [1 for f in fear_feats] + [2 for f in joy_feats] + [3 for f in sadness_feats]
 
-def run(num_samples = 10000, verbose = False):
+    return tweets, emotions    
+
+def run(num_samples = 10000, verbose = False, Covid = False):
         # Extract features
 
         ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose = verbose, num_samples = num_samples)
-
+        if Covid:
+            val_xs, val_ys = read_data()
 ##      negationArray = [negation.mark_negation(sent) for sent in val_xs]
         clf = Classifier(ext.score, ext.log_prior, ext.num_classes)
         # Make validation bow
@@ -58,4 +74,4 @@ def run(num_samples = 10000, verbose = False):
 
 
 if __name__ == '__main__':
-    run()
+    run(Covid = True)
