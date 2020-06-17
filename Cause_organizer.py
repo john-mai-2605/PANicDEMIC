@@ -41,8 +41,8 @@ def excommon2(a,b,com3s): # if i in common(a,b) and not in 3commons+allcommon
         if i not in com3s:
             xcommon2.append(i)
     return xcommon2
-def feature_extractor(verbose=False):
-    cause_list=cc.run(verbose=verbose)
+def run(verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]):
+    cause_list=cc.run(verbose=verbose, dates = dates)
     anger=cause_list[3]
     fear=cause_list[0]
     joy=cause_list[2]
@@ -122,24 +122,24 @@ def feature_extractor(verbose=False):
         print()
         print()
         print("Exclusively Anger")
-        for i in xA:
-            print(i,end=", ")
-        print()
-        print()
-        print("Exclusively Fear")
-        for i in xF:
-            print(i,end=", ")
-        print()
-        print()
-        print("Exclusively Joy")
-        for i in xJ:
-            print(i,end=", ")
-        print()
-        print()
-        print("Exclusively Sadness")
-        for i in xS:
-            print(i,end=", ")
+    for i in xA:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively Fear")
+    for i in xF:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively Joy")
+    for i in xJ:
+        print(i,end=", ")
+    print()
+    print()
+    print("Exclusively Sadness")
+    for i in xS:
+        print(i,end=", ")
     return xA, xF, xJ, xS
 
 if __name__ == '__main__':
-    feature_extractor()
+    run(verbose = True)

@@ -37,10 +37,10 @@ class Classifier():
 
 def read_data():
     pattern = re.compile('\W')
-    anger_df = pd.read_csv("result_anger.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
-    fear_df = pd.read_csv("result_fear.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
-    joy_df = pd.read_csv("result_joy.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
-    sadness_df = pd.read_csv("result_sadness.csv", sep=',', header=None, engine='python', skiprows=2, encoding = "utf-8")
+    anger_df = pd.read_csv("result_anger.csv", sep=',', header=None, engine='python', encoding = "utf-8")
+    fear_df = pd.read_csv("result_fear.csv", sep=',', header=None, engine='python', encoding = "utf-8")
+    joy_df = pd.read_csv("result_joy.csv", sep=',', header=None, engine='python', encoding = "utf-8")
+    sadness_df = pd.read_csv("result_sadness.csv", sep=',', header=None, engine='python', encoding = "utf-8")
     # Dataset is now stored in a Pandas Dataframe
     anger_feats = list(anger_df[1])
     fear_feats = list(fear_df[1])
@@ -52,10 +52,10 @@ def read_data():
 
     return tweets, emotions    
 
-def run(num_samples = 10000, verbose = False, Covid = False):
+def run(num_samples = 10000, verbose = False, Covid = False, feed_back = None):
         # Extract features
 
-        ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose = verbose, num_samples = num_samples)
+        ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose = verbose, num_samples = num_samples, feed_back = feed_back)
         if Covid:
             val_xs, val_ys = read_data()
 ##      negationArray = [negation.mark_negation(sent) for sent in val_xs]
@@ -74,4 +74,4 @@ def run(num_samples = 10000, verbose = False, Covid = False):
 
 
 if __name__ == '__main__':
-    run(Covid = True)
+    run(Covid = True, feed_back = [["johnson", "amazon",  "politics"],[],[],[]])

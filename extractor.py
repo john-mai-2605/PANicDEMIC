@@ -34,10 +34,13 @@ def data_loader(tweets, emotions, num_samples, train_test_ratio = 0.75):
     num_data, num_train = len(emotions), int(len(emotions) * train_test_ratio)
     return (tweets[:num_train], emotions[:num_train]), (tweets[num_train:], emotions[num_train:])
 
-def _create_bow(sentences, vectorizer=None, msg_prefix="\n"):
+def _create_bow(sentences, vectorizer=None, msg_prefix="\n", vocab = None):
     print("{} Bow construction".format(msg_prefix))
     if vectorizer is None:
-        vectorizer = TfidfVectorizer(stop_words = 'english', min_df = 3, max_df = 0.95, max_features = 2000)
+        if vocab: 
+            vectorizer = TfidfVectorizer(vocabulary = vocab)
+        else:
+            vectorizer = TfidfVectorizer(stop_words = 'english', min_df = 3, max_df = 0.95, max_features = 2000)
         sentence_vectors = vectorizer.fit_transform(sentences)
     else:
         sentence_vectors = vectorizer.transform(sentences)
@@ -78,22 +81,28 @@ class FeatureExtractor:
         # likelihood_list = sorted(likelihood_list, key = lambda x: x[x][])
         nll = np.asarray(likelihood_list)
         return nll
-    def feature_extract(self, max_features = None):
-      feature_list = []
-      for c in range(self.num_classes):
-        feature = []
-        for w in range(len(self.log_likelihood[c])):
-          score = max([self.log_likelihood[c][w] - self.log_likelihood[i][w] for i in range(self.num_classes)])
-          feature.append((w, score))
-        feature = sorted(feature, key = lambda x: x[1], reverse = True)[:max_features]
-        feature_list.append(feature)
-      for c in range(self.num_classes):
-        for w, s in feature_list[c]:
-              self.score[c][w] = s
-      return feature_list
+    def feature_extract(self, max_features = None, feed_back = None):
+        feature_list = []
+        for c in range(self.num_classes):
+            feature = []
+            for w in range(len(self.log_likelihood[c])):
+              score = max([self.log_likelihood[c][w] - self.log_likelihood[i][w] for i in range(self.num_classes)])
+              feature.append((w, score))
+            feature = sorted(feature, key = lambda x: x[1], reverse = True)[:max_features]
+            feature_list.append(feature)
+        for c in range(self.num_classes):
+            for w, s in feature_list[c]:
+                self.score[c][w] = s            
+        if feed_back:
+            ptr = 0
+            for i, emotion in enumerate(feed_back):
+                for word in emotion:
+                    self.score[i][ptr] += 0.1
+                    ptr += 1            
+        return feature_list
 
 
-def run(num_samples=10000, verbose=False):
+def run(num_samples=10000, verbose=False, feed_back = None):
     # Load the dataset
     tweets, emotions = get_data()
     (train_xs, train_ys), (val_xs, val_ys) = data_loader(tweets, emotions, num_samples, 0.75)
@@ -103,6 +112,18 @@ def run(num_samples=10000, verbose=False):
         print("\n[Num Train]: {}\n[Num Test]: {}".format(len(train_ys), len(val_ys)))
     # Create bow representation of train set
     count_vectorizer, train_bows, _ = _create_bow(train_xs, msg_prefix="\n[Train]")
+    myvocab = count_vectorizer.vocabulary_.copy()
+    if feed_back:
+        fb = feed_back[0] + feed_back[1] + feed_back[2] + feed_back[3]
+        extend = len(fb)
+        for word, id_ in myvocab.items():
+            myvocab[word] = id_ + extend
+        id_ = 0            
+        for word in fb:
+            myvocab[word] = id_
+            id_ += 1
+        count_vectorizer, train_bows, _ = _create_bow(train_xs, msg_prefix="\n[Train]", vocab = set(myvocab))
+        myvocab = count_vectorizer.vocabulary_.copy()
     counted = len(count_vectorizer.get_feature_names())
     if verbose:
         print("\n[Vocab]: {} words".format(counted))
@@ -112,13 +133,15 @@ def run(num_samples=10000, verbose=False):
         print("\n[FeatureExtractor] Training Complete")
     # id2word
     id2word = {}
-    for w, id in count_vectorizer.vocabulary_.items():
-      id2word[id] = w
+    for w, id_ in myvocab.items():
+      id2word[id_] = w
     # Extract features
-    feature_list = fe.feature_extract(100)
+    feature_list = fe.feature_extract(100, feed_back)
+    print(fe.score.shape, len(myvocab))
+    print(fe.score[:,10])
+    print(id2word[10])
     for i in range(4):
         top_feature = [(id2word[feat[0]], feat[1]) for feat in feature_list[i]]
-
         if verbose:
         	print(top_feature)
         	feat_dict = dict([(feat[0], np.exp(feat[1])) for feat in top_feature])
@@ -131,4 +154,4 @@ def run(num_samples=10000, verbose=False):
     return fe, val_xs, val_ys, count_vectorizer
 
 if __name__ == '__main__':
-    run()
+    run(feed_back=[["Hey"],[],[],[]])
