@@ -139,7 +139,7 @@ def run(verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../202
     print("Exclusively Sadness")
     for i in xS:
         print(i,end=", ")
-    return xA, xF, xJ, xS
+    return xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ
 
 if __name__ == '__main__':
     run(verbose = True)

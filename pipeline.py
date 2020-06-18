@@ -17,8 +17,8 @@ def run(progress = True, verbose = False):
         # dates = (["../2020-03-30 Coronavirus Tweets.csv","../2020-04-02 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-09 Coronavirus Tweets.csv"]
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(13,31,7)]
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)])            
-        xA, xF, xJ, xS = cause.run(verbose = verbose, dates = dates)
-        classifier.run(Covid = True, verbose = verbose, feed_back = [xA, xF, xJ, xS])
+        xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ = cause.run(verbose = verbose, dates = dates)
+        classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
     else:
         # the list "dates" contain the path of the tweets' files
         
