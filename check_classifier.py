@@ -54,22 +54,22 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
         check_list = list(zip(val_data_list[0][0], val_data_list[0][1], val_data_list[0][2]))
         check_anger = sorted([item for item in check_list if item[0] == 0],key=lambda x:x[1],reverse=True)
         print("ANGER:", len(check_anger))
-        for i in check_anger[:len(check_anger)//200]:
+        for i in check_anger[:len(check_anger)//500]:
             print(i)
 
         #print(fearCFD.most_common(150))
         check_joy = sorted([item for item in check_list if item[0] == 2],key=lambda x:x[1],reverse=True)
         print("JOY:", len(check_joy))
-        for i in check_joy[:len(check_joy)//200]:
+        for i in check_joy[:len(check_joy)//500]:
             print(i)
                 
         check_sadness = sorted([item for item in check_list if item[0] == 3],key=lambda x:x[1],reverse=True)
         print("SADNESS:", len(check_sadness))
-        for i in check_sadness[:len(check_sadness)//200]:
+        for i in check_sadness[:len(check_sadness)//500]:
             print(i)
         check_fear = sorted([item for item in check_list if item[0] == 1], key=lambda x:x[1],reverse=True)
         print("FEAR:", len(check_fear))
-        for i in check_fear[:len(check_fear)//200]:
+        for i in check_fear[:len(check_fear)//500]:
             print(i)
         model = Word2Vec([nltk.word_tokenize(twt[2].lower()) for twt in check_fear+check_sadness+check_joy+check_anger], size=50, workers=4, iter = 10)
 

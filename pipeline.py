@@ -27,13 +27,15 @@ def run(progress = True, verbose = False):
 
         
         xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S = cause.run(verbose = verbose, dates = dates)
+
         # set extractor line #100 to => s
-        # s = 0.2
+        # s = 0.2 : exclusive cause reinforce
         # classifier.run(Covid = True, verbose = verbose, feed_back = [xA, xF, xJ, xS])
-        # s = -0.4
+        # s = -0.4 : non-cause deduction
         # classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
-        # s = ?
+        # s = ? : inclusive cause reinforce
         classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S])
+        
     else:
         # the list "dates" contain the path of the tweets' files
         
