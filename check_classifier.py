@@ -50,8 +50,13 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
         print(result_data)
 
         # See classification of random sentences from the first set
+        combined_preds,combined_scores,combined_tweets=[],[],[]
+        for val_data in val_data_list:
+                combined_preds=combined_preds+list(val_data[0])
+                combined_scores=combined_scores+list(val_data[1])
+                combined_tweets=combined_tweets+list(val_data[2])
         
-        check_list = list(zip(val_data_list[0][0], val_data_list[0][1], val_data_list[0][2]))
+        check_list = list(zip(combined_preds,combined_scores,combined_tweets))
         check_anger = sorted([item for item in check_list if item[0] == 0],key=lambda x:x[1],reverse=True)
         print("ANGER:", len(check_anger))
         for i in check_anger[:len(check_anger)//500]:
