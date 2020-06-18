@@ -93,41 +93,41 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
             words = [w for w, fr in CFD.most_common(200) if (w not in stp.words('english') and len(w)>2 and w not in avoid)]
             result.append(words)
             if verbose:
-                    vecs = [model[w] for w in words]
-                    tsne = TSNE(n_components=2)
-                    vecs_tsne = tsne.fit_transform(vecs)
-                    df = pd.DataFrame(vecs_tsne, index=words, columns=['x', 'y'])
-                    fig = plt.figure()
-                    fig.suptitle("Word Cluster for {}".format(title[titlei]),fontsize=25)
-                    ax = fig.add_subplot(1, 1, 1)
-                    ax.title.set_text(title[titlei])
-                    kcl = KMeansClusterer(5, nltk.cluster.util.cosine_distance, repeats = 50)
-                    Labels = kcl.cluster(vecs, assign_clusters=True)
-                    colors = []
-                    for i in Labels:
-                        if (i==0):
-                                colors.append("r")
-                        elif (i==1):
-                                colors.append("g")
-                        elif (i==2):
-                                colors.append("y")
-                        elif (i==3):
-                                colors.append("c")
-                        elif (i==4):
-                                colors.append("m")
-                        else:
-                                colors.append("k")
+                vecs = [model[w] for w in words]
+                tsne = TSNE(n_components=2)
+                vecs_tsne = tsne.fit_transform(vecs)
+                df = pd.DataFrame(vecs_tsne, index=words, columns=['x', 'y'])
+                fig = plt.figure()
+                fig.suptitle("Word Cluster for {}".format(title[titlei]),fontsize=25)
+                ax = fig.add_subplot(1, 1, 1)
+                ax.title.set_text(title[titlei])
+                kcl = KMeansClusterer(5, nltk.cluster.util.cosine_distance, repeats = 50)
+                Labels = kcl.cluster(vecs, assign_clusters=True)
+                colors = []
+                for i in Labels:
+                    if (i==0):
+                        colors.append("r")
+                    elif (i==1):
+                        colors.append("g")
+                    elif (i==2):
+                        colors.append("y")
+                    elif (i==3):
+                        colors.append("c")
+                    elif (i==4):
+                        colors.append("m")
+                    else:
+                        colors.append("k")
                                     
-                    ax.scatter(df['x'], df['y'],marker=6, s=270, c=colors)
-                    titlei=titlei+1
-                    for word, pos in df.iterrows():
-                        ax.annotate(word, pos, fontsize=10)
-                    for j in range(10):
-                        for i in range(len(vecs)):
-                            if Labels[i] == j:
-                                print(words[i])
-                        print("\n")
-                    plt.show()      
+                ax.scatter(df['x'], df['y'],marker=6, s=270, c=colors)
+                titlei=titlei+1
+                for word, pos in df.iterrows():
+                    ax.annotate(word, pos, fontsize=10)
+                for j in range(10):
+                    for i in range(len(vecs)):
+                        if Labels[i] == j:
+                            print(words[i])
+                    print("\n")
+                plt.show()      
         return result
 if __name__ == '__main__':
     run(verbose = False)
