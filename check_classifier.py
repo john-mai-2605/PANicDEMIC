@@ -59,22 +59,22 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
         check_list = list(zip(combined_preds,combined_scores,combined_tweets))
         check_anger = sorted([item for item in check_list if item[0] == 0],key=lambda x:x[1],reverse=True)
         print("ANGER:", len(check_anger))
-        for i in check_anger[:len(check_anger)//1000]:
+        for i in check_anger[:len(check_anger)//4000]:
             print(i)
 
         #print(fearCFD.most_common(150))
         check_joy = sorted([item for item in check_list if item[0] == 2],key=lambda x:x[1],reverse=True)
         print("JOY:", len(check_joy))
-        for i in check_joy[:len(check_joy)//1000]:
+        for i in check_joy[:len(check_joy)//4000]:
             print(i)
                 
         check_sadness = sorted([item for item in check_list if item[0] == 3],key=lambda x:x[1],reverse=True)
         print("SADNESS:", len(check_sadness))
-        for i in check_sadness[:len(check_sadness)//1000]:
+        for i in check_sadness[:len(check_sadness)//4000]:
             print(i)
         check_fear = sorted([item for item in check_list if item[0] == 1], key=lambda x:x[1],reverse=True)
         print("FEAR:", len(check_fear))
-        for i in check_fear[:len(check_fear)//1000]:
+        for i in check_fear[:len(check_fear)//4000]:
             print(i)
         model = Word2Vec([nltk.word_tokenize(twt[2].lower()) for twt in check_fear+check_sadness+check_joy+check_anger], size=50, workers=4, iter = 10)
 
@@ -92,42 +92,42 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
             # model = model.wv.save_word2vec_format()
             words = [w for w, fr in CFD.most_common(200) if (w not in stp.words('english') and len(w)>2 and w not in avoid)]
             result.append(words)
-            vecs = [model[w] for w in words]
-            tsne = TSNE(n_components=2)
-            vecs_tsne = tsne.fit_transform(vecs)
-            df = pd.DataFrame(vecs_tsne, index=words, columns=['x', 'y'])
-            fig = plt.figure()
-            fig.suptitle("Word Cluster for {}".format(title[titlei]),fontsize=25)
-            ax = fig.add_subplot(1, 1, 1)
-            ax.title.set_text(title[titlei])
-            kcl = KMeansClusterer(5, nltk.cluster.util.cosine_distance, repeats = 50)
-            Labels = kcl.cluster(vecs, assign_clusters=True)
-            colors = []
-            for i in Labels:
-                if (i==0):
-                        colors.append("r")
-                elif (i==1):
-                        colors.append("g")
-                elif (i==2):
-                        colors.append("y")
-                elif (i==3):
-                        colors.append("c")
-                elif (i==4):
-                        colors.append("m")
-                else:
-                        colors.append("k")
-                            
-            ax.scatter(df['x'], df['y'],marker=6, s=270, c=colors)
-            titlei=titlei+1
-            for word, pos in df.iterrows():
-                ax.annotate(word, pos, fontsize=12) 
             if verbose:
-                for j in range(10):
-                    for i in range(len(vecs)):
-                        if Labels[i] == j:
-                            print(words[i])
-                    print("\n")
-                plt.show()      
+                    vecs = [model[w] for w in words]
+                    tsne = TSNE(n_components=2)
+                    vecs_tsne = tsne.fit_transform(vecs)
+                    df = pd.DataFrame(vecs_tsne, index=words, columns=['x', 'y'])
+                    fig = plt.figure()
+                    fig.suptitle("Word Cluster for {}".format(title[titlei]),fontsize=25)
+                    ax = fig.add_subplot(1, 1, 1)
+                    ax.title.set_text(title[titlei])
+                    kcl = KMeansClusterer(5, nltk.cluster.util.cosine_distance, repeats = 50)
+                    Labels = kcl.cluster(vecs, assign_clusters=True)
+                    colors = []
+                    for i in Labels:
+                        if (i==0):
+                                colors.append("r")
+                        elif (i==1):
+                                colors.append("g")
+                        elif (i==2):
+                                colors.append("y")
+                        elif (i==3):
+                                colors.append("c")
+                        elif (i==4):
+                                colors.append("m")
+                        else:
+                                colors.append("k")
+                                    
+                    ax.scatter(df['x'], df['y'],marker=6, s=270, c=colors)
+                    titlei=titlei+1
+                    for word, pos in df.iterrows():
+                        ax.annotate(word, pos, fontsize=10)
+                    for j in range(10):
+                        for i in range(len(vecs)):
+                            if Labels[i] == j:
+                                print(words[i])
+                        print("\n")
+                    plt.show()      
         return result
 if __name__ == '__main__':
     run(verbose = False)
