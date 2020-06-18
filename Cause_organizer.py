@@ -65,6 +65,10 @@ def run(verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../202
     xF=excommon2(fear,fear,com3s+cm)
     xJ=excommon2(joy,joy,com3s+cm)
     xS=excommon2(sadness,sadness,com3s+cm)
+    _A=excommon2(anger,anger,com4)
+    _F=excommon2(fear,fear,com4)
+    _J=excommon2(joy,joy,com4)
+    _S=excommon2(sadness,sadness,com4)
     if verbose:#under this part is just printing part(massive, I know)
         print("Common for all")
         for i in com4:
@@ -139,7 +143,7 @@ def run(verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../202
     print("Exclusively Sadness")
     for i in xS:
         print(i,end=", ")
-    return xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ
+    return xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S
 
 if __name__ == '__main__':
     run(verbose = True)

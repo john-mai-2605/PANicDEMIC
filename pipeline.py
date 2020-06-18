@@ -6,7 +6,7 @@ import check_classifier as check
 def run(progress = True, verbose = False):
     if progress:
         classifier.run(Covid = True, verbose = verbose)
-        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
         # April overall Sun/Wed
         # dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
         #        +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
@@ -14,11 +14,20 @@ def run(progress = True, verbose = False):
 
 
         # April overall Mon/Thu
-        # dates = (["../2020-03-30 Coronavirus Tweets.csv","../2020-04-02 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-09 Coronavirus Tweets.csv"]
+        #dates = (["../2020-03-30 Coronavirus Tweets.csv","../2020-04-02 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-09 Coronavirus Tweets.csv"]
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(13,31,7)]
-        #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)])            
-        xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ = cause.run(verbose = verbose, dates = dates)
-        classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
+        #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)])
+
+        
+        # April overall Mon/Thu
+        dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-03 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
+                  +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,31,7)]
+                  +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
+                  +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
+
+        
+        xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S = cause.run(verbose = verbose, dates = dates)
+        classifier.run(Covid = True, verbose = verbose, feed_back = [xA, xF, xJ, xS])
     else:
         # the list "dates" contain the path of the tweets' files
         
