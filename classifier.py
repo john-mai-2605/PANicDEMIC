@@ -26,13 +26,16 @@ class Classifier():
 ##                              scoreList.append(score_feat)
 ##                      final_score = [np.sum(np.dot(score_feat, negationArray[i])) for score_feat in scoreList]
 ##                      labels.append(np.argmax(final_score))
-        def classify(self, bows):
+        def classify(self, bows, prior = False):
                 labels = []
                 scores = []
                 for bow in tqdm(bows):
+                    if prior:
                         log_posterior = self.log_prior + np.sum(self.score * bow, axis=1)
-                        labels.append(np.argmax(log_posterior))
-                        scores.append(np.max(log_posterior))
+                    else:
+                        log_posterior = np.sum(self.score * bow, axis=1)                        
+                    labels.append(np.argmax(log_posterior))
+                    scores.append(np.max(log_posterior))
                 return np.asarray(labels), np.asarray(scores)
 
 def read_data():
