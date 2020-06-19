@@ -56,7 +56,15 @@ def run(progress = True, verbose = False, loadFile=False):
             ["../2020-03-20 Coronavirus Tweets.csv"],
             ["../2020-03-25 Coronavirus Tweets.csv"],
             ["../2020-03-28 Coronavirus Tweets.csv"],
-            ["../2020-03-29 Coronavirus Tweets.csv","../2020-03-30 Coronavirus Tweets.csv","../2020-03-28 Coronavirus Tweets.csv"]
+            ["../2020-03-29 Coronavirus Tweets.csv"],
+            ["../2020-03-25 Coronavirus Tweets.csv","../2020-03-28 Coronavirus Tweets.csv","../2020-03-29 Coronavirus Tweets.csv"],
+            ["../2020-03-30 Coronavirus Tweets.csv","../2020-03-31 Coronavirus Tweets.csv"]
+            +["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,6)],
+            ["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(6,10)]
+            +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,13)],
+            ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(13,20)],
+            ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(20,27)],
+            ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(27,31)]
                 ]
 
         for d in dateChunks:

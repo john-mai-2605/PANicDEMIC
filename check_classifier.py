@@ -53,8 +53,23 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
         for i in val_data_list:
                 fd = nltk.FreqDist(i[0])
                 result_data.append(list(fd.items()))
-        print(dates)
-        print(result_data)
+        for d in dates:
+                print(d[8:13],end=" + ")
+        print()
+        _a,_f,_j,_s=0,0,0,0
+        for rData in result_data:
+                for i in rData:
+                        if i[0]==0:
+                                _a+=i[1]
+                        elif i[0]==1:
+                                _f+=i[1]
+                        elif i[0]==2:
+                                _j+=i[1]
+                        else:
+                                _s+=i[1]
+        print("Anger : {0}, Fear: {1}, Joy: {2}, Sadness: {3}".format(_a,_f,_j,_s))
+        tot=_a+_f+_j+_s
+        print("{0:.4f}, {1:.4f}, {2:.4f}, {3:.4f}".format(_a/tot,_f/tot,_j/tot,_s/tot))
 
         # See classification of random sentences from the first set
         combined_preds,combined_scores,combined_tweets=[],[],[]
