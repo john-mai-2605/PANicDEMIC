@@ -7,7 +7,7 @@ from pickle import dump,load
 def run(progress = True, verbose = False, loadFile=False):
     if progress:
         classifier.run(Covid = True, verbose = verbose)
-        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
         # April overall Sun/Wed
         # dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
         #        +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
@@ -46,9 +46,9 @@ def run(progress = True, verbose = False, loadFile=False):
         # s = 0.2 : exclusive cause reinforce
         #classifier.run(Covid = True, verbose = verbose, feed_back = [xA, xF, xJ, xS])
         # s = -0.4 : non-cause deduction
-        classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
+        #classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
         # s = -0.2 : inclusive cause reinforce
-        #classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S])
+        classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S])
         # s = ? : inclusive cause reinforce
         #classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4])
         
@@ -65,5 +65,5 @@ def run(progress = True, verbose = False, loadFile=False):
         #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])        
         check_classifier.run(verbose = verbose)
 if __name__ == '__main__':
-    run(loadFile=False)
+    run(loadFile=True)
 
