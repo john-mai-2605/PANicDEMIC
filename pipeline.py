@@ -38,9 +38,9 @@ def run(progress = True, verbose = False):
         # s = 0.2 : exclusive cause reinforce
         #classifier.run(Covid = True, verbose = verbose, feed_back = [xA, xF, xJ, xS])
         # s = -0.4 : non-cause deduction
-        #classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
-        # s = ? : inclusive cause reinforce
-        classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S])
+        classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
+        # s = -0.2 : inclusive cause reinforce
+        #classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S])
         # s = ? : inclusive cause reinforce
         #classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4])
         

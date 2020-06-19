@@ -97,7 +97,7 @@ class FeatureExtractor:
             ptr = 0
             for i, emotion in enumerate(feed_back):
                 for word in emotion:
-                    self.score[i][ptr] += -0.2
+                    self.score[i][ptr] += -0.4
                     ptr += 1            
         return feature_list
 
