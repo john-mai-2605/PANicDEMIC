@@ -4,7 +4,7 @@ import Cause_organizer as cause
 import check_classifier as check
 from pickle import dump,load
 
-def run(progress = True, verbose = False, loadFile=False,causeFilename="causeSunWedFri",outputDivider=900):
+def run(progress = True, verbose = False, loadFile=False,printtweets=False,causeFilename="causeSunWedFri",outputDivider=900):
     if progress:
         classifier.run(Covid = True, verbose = verbose)
         #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
@@ -56,7 +56,7 @@ def run(progress = True, verbose = False, loadFile=False,causeFilename="causeSun
         classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4],sf=0)
         """
         
-        classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S],sf=-0.2)
+        classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ],sf=-0.4)
 
         if loadFile:
             dateChunks=[# weekly analysis
@@ -79,7 +79,7 @@ def run(progress = True, verbose = False, loadFile=False,causeFilename="causeSun
                     ]
 
             for d in dateChunks:
-                check.run(dates=d,verbose=False,loadFile4result=True,outDeminish=outputDivider,loadFilename=causeFilename)
+                check.run(dates=d,verbose=False,loadFile4result=True,printtweets=printtweets,outDeminish=outputDivider,loadFilename=causeFilename)
         
         
     else:
@@ -95,7 +95,7 @@ def run(progress = True, verbose = False, loadFile=False,causeFilename="causeSun
         #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])        
         check_classifier.run(verbose = verbose)
 if __name__ == '__main__':
-    run(loadFile=True, causeFilename="((_,-0.4)=0.85)causeSunWedSat",outputDivider=900)
+    run(loadFile=True,printtweets=False, causeFilename="((cm,-0.4)=0.84)causeSunWed",outputDivider=900)
     
 """To try different accuracy settings
 edit line 59(or if not sure, line with classiferi.run(...)

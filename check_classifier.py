@@ -14,7 +14,7 @@ from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt
 from pickle import load
-def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],loadFile4result=False,loadFilename="cause"):
+def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],loadFile4result=False,loadFilename="cause",printtweets=True):
         # the list "avoid" contains manual filtering data
         avoid = ['...',"n't",'https']
         data_list = []
@@ -30,7 +30,7 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
                 loading=open(loadFilename+".pkl",'rb')
                 xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
                 loading.close()
-                ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose, num_samples = num_samples, feed_back = [_A,_F,_J,_S])
+                ext, val_xs, val_ys, count_vectorizer = extractor.run(feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ], verbose=verbose, num_samples = num_samples)
         else:
                 ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose,num_samples=num_samples)
         clf = classifier.Classifier(ext.score, ext.log_prior, ext.num_classes)
@@ -77,7 +77,7 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
                 combined_preds=combined_preds+list(val_data[0])
                 combined_scores=combined_scores+list(val_data[1])
                 combined_tweets=combined_tweets+list(val_data[2])
-        if not loadFile4result:
+        if printtweets:
                 check_list = list(zip(combined_preds,combined_scores,combined_tweets))
                 check_anger = sorted([item for item in check_list if item[0] == 0],key=lambda x:x[1],reverse=True)
                 print("ANGER:", len(check_anger))
