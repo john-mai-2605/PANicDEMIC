@@ -14,7 +14,7 @@ from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt
 from pickle import load
-def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],loadFile4result=False):
+def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],loadFile4result=False,loadFilename="cause"):
         # the list "avoid" contains manual filtering data
         avoid = ['...',"n't",'https']
         data_list = []
@@ -27,7 +27,7 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
         # val here means validation set. val_x means the validation tweet
         # and val_y means the validated emotion for the val_x(tweet)
         if loadFile4result:
-                loading=open("causes.pkl",'rb')
+                loading=open(loadFilename+".pkl",'rb')
                 xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
                 loading.close()
                 ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose, num_samples = num_samples, feed_back = [_A,_F,_J,_S])

@@ -79,7 +79,7 @@ def run(progress = True, verbose = False, loadFile=False,causeFilename="causeSun
                     ]
 
             for d in dateChunks:
-                check.run(dates=d,verbose=False,loadFile4result=True,outDeminish=outputDivider)
+                check.run(dates=d,verbose=False,loadFile4result=True,outDeminish=outputDivider,loadFilename=causeFilename)
         
         
     else:
