@@ -47,14 +47,14 @@ def _create_bow(sentences, vectorizer=None, msg_prefix="\n", vocab = None):
     return vectorizer, sentence_vectors.toarray(), sentences
 
 class FeatureExtractor:
-    def __init__(self, num_vocab, num_classes):
+    def __init__(self, num_vocab, num_classes, scoreFactor):
         self.num_classes = num_classes
         self.num_vocab = num_vocab
 
         self.class_to_num_sentences = np.zeros(self.num_classes)
         self.class_and_word_to_counts = np.zeros((self.num_classes, self.num_vocab))
         self.score = np.zeros((self.num_classes, self.num_vocab))
-
+        self.sf=scoreFactor
         self.log_prior = None
         self.log_likelihood = None
 
@@ -97,12 +97,12 @@ class FeatureExtractor:
             ptr = 0
             for i, emotion in enumerate(feed_back):
                 for word in emotion:
-                    self.score[i][ptr] += -0.2
+                    self.score[i][ptr] += self.sf
                     ptr += 1            
         return feature_list
 
 
-def run(num_samples=10000, verbose=False, feed_back = None):
+def run(num_samples=10000, verbose=False, feed_back = None, scoreFactor=0):
     # Load the dataset
     tweets, emotions = get_data()
     (train_xs, train_ys), (val_xs, val_ys) = data_loader(tweets, emotions, num_samples, 0.75)
@@ -127,7 +127,7 @@ def run(num_samples=10000, verbose=False, feed_back = None):
     counted = len(count_vectorizer.get_feature_names())
     if verbose:
         print("\n[Vocab]: {} words".format(counted))
-    fe = FeatureExtractor(num_vocab=counted, num_classes=4)
+    fe = FeatureExtractor(num_vocab=counted, num_classes=4,scoreFactor=scoreFactor)
     fe.fit(train_bows, train_ys)
     if verbose:
         print("\n[FeatureExtractor] Training Complete")
