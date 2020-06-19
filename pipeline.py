@@ -21,9 +21,9 @@ def run(progress = True, verbose = False):
         
         # April overall Sun/Wed/Fri
         #dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-03 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
-                  +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,31,7)]
-                  +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
-                  +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
+        #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,31,7)]
+        #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
+        #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
 
         # April overall Mon/Thu/Sat
         #dates = (["../2020-03-30 Coronavirus Tweets.csv","../2020-04-02 Coronavirus Tweets.csv","../2020-04-04 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-09 Coronavirus Tweets.csv"]
