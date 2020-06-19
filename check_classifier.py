@@ -90,7 +90,7 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
             wFD = nltk.FreqDist(Words)
 
             # model = model.wv.save_word2vec_format()
-            words = [w for w, fr in wFD.most_common(200) if (w not in stp.words('english') and len(w)>2 and w not in avoid)]
+            words = [w for w, fr in wFD.most_common(200) if (w not in list(stp.words('english'))+avoid and len(w)>2)]
             result.append(words)
             if verbose:
                 vecs = [model[w] for w in words]

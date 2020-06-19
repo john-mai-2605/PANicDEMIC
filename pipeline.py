@@ -1,12 +1,13 @@
 import extractor
 import classifier
 import Cause_organizer as cause 
-import check_classifier as check 
+import check_classifier as check
+from pickle import dump,load
 
-def run(progress = True, verbose = False):
+def run(progress = True, verbose = False, loadFile=False):
     if progress:
         classifier.run(Covid = True, verbose = verbose)
-        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
         # April overall Sun/Wed
         # dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
         #        +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
@@ -31,8 +32,15 @@ def run(progress = True, verbose = False):
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)]
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(11,31,7)])
 
-        
-        xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4 = cause.run(verbose = verbose, dates = dates)
+        if loadFile:
+            loading=open("causes.pkl",'rb')
+            xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
+            loading.close()
+        else:
+            xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4 = cause.run(verbose = verbose, dates = dates)
+            saving=open("causes.pkl","wb")
+            dump((xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4),saving,-1)
+            saving.close()
 
         # set extractor line #100 to => s
         # s = 0.2 : exclusive cause reinforce
@@ -57,5 +65,5 @@ def run(progress = True, verbose = False):
         #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])        
         check_classifier.run(verbose = verbose)
 if __name__ == '__main__':
-    run()
+    run(loadFile=False)
 
