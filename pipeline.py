@@ -6,7 +6,7 @@ import check_classifier as check
 def run(progress = True, verbose = False):
     if progress:
         classifier.run(Covid = True, verbose = verbose)
-        #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
         # April overall Sun/Wed
         # dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
         #        +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
@@ -20,7 +20,7 @@ def run(progress = True, verbose = False):
 
         
         # April overall Sun/Wed/Fri
-        dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-03 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
+        #dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-03 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
                   +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,31,7)]
                   +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
                   +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
