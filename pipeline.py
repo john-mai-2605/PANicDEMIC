@@ -49,6 +49,19 @@ def run(progress = True, verbose = False, loadFile=False):
         #classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ])
         # s = -0.2 : inclusive cause reinforce
         classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S])
+        dateChunks=[
+            ["../2020-03-00 Coronavirus Tweets (pre 2020-03-12).csv"],
+            ["../2020-03-12 Coronavirus Tweets.csv"],
+            ["../2020-03-15 Coronavirus Tweets.csv"],
+            ["../2020-03-20 Coronavirus Tweets.csv"],
+            ["../2020-03-25 Coronavirus Tweets.csv"],
+            ["../2020-03-28 Coronavirus Tweets.csv"],
+            ["../2020-03-29 Coronavirus Tweets.csv","../2020-03-30 Coronavirus Tweets.csv","../2020-03-28 Coronavirus Tweets.csv"]
+                ]
+
+        for d in dateChunks:
+            check.run(dates=d,verbose=False,loadFile4result=True)
+        
         # s = ? : inclusive cause reinforce
         #classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4])
         
