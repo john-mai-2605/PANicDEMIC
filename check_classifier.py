@@ -32,7 +32,7 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
                 loading.close()
                 ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose, num_samples = num_samples, feed_back = [_A,_F,_J,_S])
         else:
-                ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose)
+                ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose,num_samples=num_samples)
         clf = classifier.Classifier(ext.score, ext.log_prior, ext.num_classes)
         # Make validation bow(bag of words)
         val_bows_list = []
