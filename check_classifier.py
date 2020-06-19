@@ -62,7 +62,6 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
         for i in check_anger[:len(check_anger)//4000]:
             print(i)
 
-        #print(fearCFD.most_common(150))
         check_joy = sorted([item for item in check_list if item[0] == 2],key=lambda x:x[1],reverse=True)
         print("JOY:", len(check_joy))
         for i in check_joy[:len(check_joy)//4000]:
@@ -76,7 +75,8 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
         print("FEAR:", len(check_fear))
         for i in check_fear[:len(check_fear)//4000]:
             print(i)
-        model = Word2Vec([nltk.word_tokenize(twt[2].lower()) for twt in check_fear+check_sadness+check_joy+check_anger], size=50, workers=4, iter = 10)
+        if verbose:
+                model = Word2Vec([nltk.word_tokenize(twt[2].lower()) for twt in check_fear+check_sadness+check_joy+check_anger], size=50, workers=4, iter = 10)
 
         checks = [check_fear, check_sadness, check_joy, check_anger]
 
@@ -85,12 +85,12 @@ def run(num_samples = 30000, num_sentences = 10, verbose = False, dates = ["../2
         result = []
         for check in checks:
             Words =[]
-            for twt in check:
-                Words += list(nltk.word_tokenize(twt[2].lower()))
-            CFD = nltk.FreqDist(Words)
+            for _twt in check:
+                Words += list(nltk.word_tokenize(_twt[2].lower()))
+            wFD = nltk.FreqDist(Words)
 
             # model = model.wv.save_word2vec_format()
-            words = [w for w, fr in CFD.most_common(200) if (w not in stp.words('english') and len(w)>2 and w not in avoid)]
+            words = [w for w, fr in wFD.most_common(200) if (w not in stp.words('english') and len(w)>2 and w not in avoid)]
             result.append(words)
             if verbose:
                 vecs = [model[w] for w in words]

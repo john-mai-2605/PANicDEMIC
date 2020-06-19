@@ -9,6 +9,7 @@ import re
 import extractor
 ##import negation
 import nltk
+#from numba import jit,cuda
 
 class Classifier():
         def __init__(self, score, log_prior, num_classes = 4):
@@ -29,13 +30,30 @@ class Classifier():
         def classify(self, bows, prior = False):
                 labels = []
                 scores = []
+                #@jit('float64[::1](float64[:,::1])')
+                def log_post(bow):
+                        if prior:
+                                log_posterior = self.log_prior + np.sum(bow, axis=1)
+                        else:
+                                log_posterior = np.sum(bow, axis=1)
+                        return log_posterior
+                #@jit("int64(float64[:])")
+                def _l(logP):
+                        return np.argmax(logP)
+                #@jit("float64(float64[:])")
+                def _s(logP):
+                        return np.max(logP)
                 for bow in tqdm(bows):
-                    if prior:
-                        log_posterior = self.log_prior + np.sum(self.score * bow, axis=1)
-                    else:
-                        log_posterior = np.sum(self.score * bow, axis=1)                        
-                    labels.append(np.argmax(log_posterior))
-                    scores.append(np.max(log_posterior))
+##                    if prior:
+##                        log_posterior = self.log_prior + np.sum(self.score * bow, axis=1)
+##                    else:
+##                        log_posterior = np.sum(self.score * bow, axis=1)
+                    log_posterior=log_post(np.array(self.score*bow))
+                    _label,_score=_l(log_posterior),_s(log_posterior)
+                    #labels.append(np.argmax(log_posterior))
+                    #scores.append(np.max(log_posterior))
+                    labels.append(_label)
+                    scores.append(_score)
                 return np.asarray(labels), np.asarray(scores)
 
 def read_data():
