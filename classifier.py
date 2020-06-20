@@ -55,10 +55,11 @@ def read_data():
 
     return tweets, emotions    
 
-def run(num_samples = 10000, verbose = False, Covid = False, feed_back = None,sf=0):
+def run(num_samples = 10000, verbose = False, Covid = False, feed_back = [],sf=0):
         # Extract features
 
-        ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose = verbose, num_samples = num_samples, feed_back = feed_back,scoreFactor=sf)
+        ext, val_xs, val_ys, count_vectorizer = extractor.run(
+                verbose = verbose, num_samples = num_samples, feed_back = feed_back,scoreFactor=sf)
         if Covid:
             val_xs, val_ys = read_data()
 ##      negationArray = [negation.mark_negation(sent) for sent in val_xs]

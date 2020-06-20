@@ -14,7 +14,11 @@ from sklearn.manifold import TSNE
 from sklearn import cluster
 import matplotlib.pyplot as plt
 from pickle import load
-def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],loadFile4result=False,loadFilename="cause",printtweets=True):
+def run(num_samples = 30000, num_sentences = 10, outDeminish=4000,
+        verbose = False,
+        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],
+        printtweets=True, feedback=[]
+        ):
         # the list "avoid" contains manual filtering data
         avoid = ['...',"n't",'https']
         data_list = []
@@ -26,13 +30,7 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
 
         # val here means validation set. val_x means the validation tweet
         # and val_y means the validated emotion for the val_x(tweet)
-        if loadFile4result:
-                loading=open(loadFilename+".pkl",'rb')
-                xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
-                loading.close()
-                ext, val_xs, val_ys, count_vectorizer = extractor.run(feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ], verbose=verbose, num_samples = num_samples)
-        else:
-                ext, val_xs, val_ys, count_vectorizer = extractor.run(verbose=verbose,num_samples=num_samples)
+        ext, val_xs, val_ys, count_vectorizer = extractor.run(feed_back = feedback, verbose=verbose, num_samples = num_samples)
         clf = classifier.Classifier(ext.score, ext.log_prior, ext.num_classes)
         # Make validation bow(bag of words)
         val_bows_list = []
@@ -69,7 +67,7 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
                                 _s+=i[1]
         print("Anger : {0}, Fear: {1}, Joy: {2}, Sadness: {3}".format(_a,_f,_j,_s))
         tot=_a+_f+_j+_s
-        print("{0:.4f}, {1:.4f}, {2:.4f}, {3:.4f}".format(_a/tot,_f/tot,_j/tot,_s/tot))
+        print("{0:.2f}%, {1:.2f}%, {2:.2f}%, {3:.2f}%".format(_a/tot*100,_f/tot*100,_j/tot*100,_s/tot*100))
 
         # See classification of random sentences from the first set
         combined_preds,combined_scores,combined_tweets=[],[],[]
@@ -83,7 +81,10 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
                 print("ANGER:", len(check_anger))
                 for i in check_anger[:len(check_anger)//outDeminish]:
                     print(i)
-
+                check_fear = sorted([item for item in check_list if item[0] == 1], key=lambda x:x[1],reverse=True)
+                print("FEAR:", len(check_fear))
+                for i in check_fear[:len(check_fear)//outDeminish]:
+                    print(i)
                 check_joy = sorted([item for item in check_list if item[0] == 2],key=lambda x:x[1],reverse=True)
                 print("JOY:", len(check_joy))
                 for i in check_joy[:len(check_joy)//outDeminish]:
@@ -93,16 +94,13 @@ def run(num_samples = 30000, num_sentences = 10,outDeminish=4000, verbose = Fals
                 print("SADNESS:", len(check_sadness))
                 for i in check_sadness[:len(check_sadness)//outDeminish]:
                     print(i)
-                check_fear = sorted([item for item in check_list if item[0] == 1], key=lambda x:x[1],reverse=True)
-                print("FEAR:", len(check_fear))
-                for i in check_fear[:len(check_fear)//outDeminish]:
-                    print(i)
+                    
                 if verbose:
                         model = Word2Vec([nltk.word_tokenize(twt[2].lower()) for twt in check_fear+check_sadness+check_joy+check_anger], size=50, workers=4, iter = 10)
 
-                checks = [check_fear, check_sadness, check_joy, check_anger]
+                checks = [check_anger, check_fear, check_joy, check_sadness]
 
-                title = ["Fear", "Sadness", "Joy", "Anger"]
+                title = ["Anger", "Fear", "Joy", "Sadness" ]
                 titlei =0
                 result = []
                 for check in checks:

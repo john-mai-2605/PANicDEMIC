@@ -41,12 +41,15 @@ def excommon2(a,b,com3s): # if i in common(a,b) and not in com3s
         if i not in com3s:
             xcommon2.append(i)
     return xcommon2
-def run(verbose = False, dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]):
-    cause_list=cc.run(verbose=verbose, dates = dates)
-    anger=cause_list[3]
-    fear=cause_list[0]
+def run(verbose = False,
+        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],
+        printtweets=False
+        ):
+    cause_list=cc.run(verbose=verbose, dates = dates,printtweets=printtweets)
+    anger=cause_list[0]
+    fear=cause_list[1]
     joy=cause_list[2]
-    sadness=cause_list[1]
+    sadness=cause_list[3]
     combined=anger+fear+joy+sadness
     com4=common4(anger,fear,joy,sadness)
     cmAFJ=excommon3(anger,fear,joy,com4)

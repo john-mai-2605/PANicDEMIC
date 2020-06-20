@@ -6,19 +6,23 @@ from pickle import dump,load
 
 def run(progress = True, verbose = False, loadFile=False,printtweets=False,causeFilename="causeSunWedFri",outputDivider=900,produceResult=False):
     if progress:
-        classifier.run(Covid = True, verbose = verbose)
+        classifier.run(Covid = True, verbose = verbose) #this gets the reference accuracy
+
+
+        """
+        various file input options as [dates]
+        """
         #dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"]#,"../2020-04-24 Coronavirus Tweets.csv" ]
+
         # April overall Sun/Wed
         dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-05 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(12,31,7)]
                 +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(15,31,7)])
 
-
         # April overall Mon/Thu
         #dates = (["../2020-03-30 Coronavirus Tweets.csv","../2020-04-02 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-09 Coronavirus Tweets.csv"]
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(13,31,7)]
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)])
-
         
         # April overall Sun/Wed/Fri
         #dates = (["../2020-03-29 Coronavirus Tweets.csv","../2020-04-01 Coronavirus Tweets.csv","../2020-04-03 Coronavirus Tweets.csv","../2020-04-06 Coronavirus Tweets.csv","../2020-04-08 Coronavirus Tweets.csv"]
@@ -32,7 +36,10 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(16,31,7)]
         #          +["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(11,31,7)])
 
-        
+
+        # This part handles the loading/saving of the cause file for feedback usage.
+        # Because the cause.run(heavily running code) doesn't run when you loadFile=True, this would be helpful.
+        # If you don't have the files or don't have computation power, set loadFile=True and use the preset cause.pkl.
         if loadFile:
             loading=open(causeFilename+".pkl",'rb')
             xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
@@ -43,7 +50,8 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
             dump((xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4),saving,-1)
             saving.close()
 
-            
+        
+        # This part shows you the accuracy information. 
         """ Feedback sandbox examples
         set scorefactor => sf
         sf = 0.2 : exclusive cause reinforce
@@ -53,11 +61,14 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         sf = -0.2 : inclusive cause reinforce *(Sun/Wed/Fri => 0.85)
         classifier.run(Covid = True, verbose = verbose, feed_back = [_A,_F,_J,_S],sf=-0.2)
         sf = ? : inclusive cause reinforce
-        classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4],sf=0)
-        """
-        
-        classifier.run(Covid = True, verbose = verbose, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ],sf=-0.4)
+        classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4],sf=0)"""
+        fb=[cmFJS, cmAJS, cmAFS, cmAFJ]
+        classifier.run(Covid = True, verbose = verbose, feed_back = fb,sf=-0.4)
+        # ^this part only tries the feedback on evaluation. This is just to show how accurate the classifier we will use on the bottom will be.
+        # vThe real work is right below.
 
+
+        #This part produces result(ex: 03-00 - Anger:4000, Fear: 1000, ...).
         if loadFile and produceResult:
             dateChunks=[# weekly analysis
                 ["../2020-03-00 Coronavirus Tweets (pre 2020-03-12).csv"],
@@ -78,9 +89,17 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
                 ["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(27,31)]
                     ]
 
+            # This part will run and get the percentage informations.
+            # REMEMBER, you should have all the files listed in dateChunks to run this part.
+            # If you don't have them, set produceResult = False.
             for d in dateChunks:
-                check.run(dates=d,verbose=False,loadFile4result=True,printtweets=printtweets,outDeminish=outputDivider,loadFilename=causeFilename)
-        
+                check.run(dates=d,verbose=False,
+                          printtweets=printtweets,
+                          outDeminish=outputDivider,
+                          feedback=fb)
+            # Sidenote! The return of check is the cause chunks in list form from the dataset.
+            #       -go to a for loop in check_classifier on line 106 ("for check in checks") for more info.
+            #       -the check in checks are tweets as list in each emotions.(The exact format can be learned from line 81 to 96 check_classifier.py)
         
     else:
         # the list "dates" contain the path of the tweets' files
@@ -95,11 +114,16 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])        
         check_classifier.run(verbose = verbose)
 if __name__ == '__main__':
-    run(loadFile=True,printtweets=False,produceResult=True, causeFilename="((cm,-0.4)=0.84)causeSunWed",outputDivider=900)
+    run(loadFile=False,printtweets=False,produceResult=True, causeFilename="((cm,-0.4)=0.84)causeSunWed",outputDivider=900)
     
-"""To try different accuracy settings
-edit line 59(or if not sure, line with classiferi.run(...)
-*important*edit line33 in check_classifier.py
-the [feed_back] field takes what set of causes you are going to apply score changes
-the [sf] field takes how much scoring change you will apply(may be of any sign)
+"""
+The [loadFile] field determines whether you are saving the causes or loading the causes.
+The [printtweets] field determines whether you want the example tweets when doing cause saving. This only takes effect when [loadFile] is true.
+The [produceResult] field determines whether the tweets counts(ex: Anger : 3000, Fear : 1000...) will be displayed.
+    -It should be put to False if you only want the accuracy result.
+The [causeFilename] field is the name of the file you are going to save/load.
+    -BE CAREFUL not to overload the existing file.(Don't worry if you do, it's recoverable.)
+The [outputDivider] is used to deminish the number of example tweets(when printtweets = True).
+    -If set to 900, 9000 tweets result will only show top 10 tweets)
+    
 """

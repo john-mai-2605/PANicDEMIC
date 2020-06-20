@@ -102,7 +102,7 @@ class FeatureExtractor:
         return feature_list
 
 
-def run(num_samples=10000, verbose=False, feed_back = None, scoreFactor=0):
+def run(num_samples=10000, verbose=False, feed_back = [], scoreFactor=0):
     # Load the dataset
     tweets, emotions = get_data()
     (train_xs, train_ys), (val_xs, val_ys) = data_loader(tweets, emotions, num_samples, 0.75)
@@ -113,7 +113,7 @@ def run(num_samples=10000, verbose=False, feed_back = None, scoreFactor=0):
     # Create bow representation of train set
     count_vectorizer, train_bows, _ = _create_bow(train_xs, msg_prefix="\n[Train]")
     myvocab = count_vectorizer.vocabulary_.copy()
-    if feed_back:
+    if not feed_back==[]:
         fb = feed_back[0] + feed_back[1] + feed_back[2] + feed_back[3]
         extend = len(fb)
         for word, id_ in myvocab.items():
