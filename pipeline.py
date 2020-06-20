@@ -63,7 +63,8 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         sf = ? : inclusive cause reinforce
         classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4],sf=0)"""
         fb=[cmFJS, cmAJS, cmAFS, cmAFJ]
-        classifier.run(Covid = True, verbose = verbose, feed_back = fb,sf=-0.4)
+        scoreFactor=-0.4
+        classifier.run(Covid = True, verbose = verbose, feed_back = fb,sf=scoreFactor)
         # ^this part only tries the feedback on evaluation. This is just to show how accurate the classifier we will use on the bottom will be.
         # vThe real work is right below.
 
@@ -125,5 +126,6 @@ The [causeFilename] field is the name of the file you are going to save/load.
     -BE CAREFUL not to overload the existing file.(Don't worry if you do, it's recoverable.)
 The [outputDivider] is used to deminish the number of example tweets(when printtweets = True).
     -If set to 900, 9000 tweets result will only show top 10 tweets)
-    
+
+To test out different cause feedback settings, adjust fb(for feedback causes) and scoreFactor on line 65 and 66.
 """
