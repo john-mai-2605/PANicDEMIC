@@ -95,7 +95,7 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])        
         check_classifier.run(verbose = verbose)
 if __name__ == '__main__':
-    run(loadFile=True,printtweets=False,produceResult=False, causeFilename="((cm,-0.4)=0.84)causeSunWed",outputDivider=900)
+    run(loadFile=True,printtweets=False,produceResult=True, causeFilename="((cm,-0.4)=0.84)causeSunWed",outputDivider=900)
     
 """To try different accuracy settings
 edit line 59(or if not sure, line with classiferi.run(...)
