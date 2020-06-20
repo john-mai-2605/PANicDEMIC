@@ -9,6 +9,8 @@ import re
 import extractor
 ##import negation
 import nltk
+import seaborn as sn
+import matplotlib.pyplot as plt
 
 class Classifier():
         def __init__(self, score, log_prior, num_classes = 4):
@@ -72,10 +74,14 @@ def run(num_samples = 10000, verbose = False, Covid = False, feed_back = [],sf=0
         val_preds, val_scores = clf.classify(val_bows)
         val_accuracy = accuracy_score(val_ys, val_preds)
 
-        val_cm = confusion_matrix(val_ys, val_preds)        
+        val_cm = confusion_matrix(val_ys, val_preds)
+        val_cm_norm = confusion_matrix(val_ys, val_preds,normalize="true")
         print("\n[Validation] Accuracy: {}".format(val_accuracy))
         print("\n[Validation] Confusion matrix: \n{}".format(val_cm))
+        if verbose:
+                sn.heatmap(val_cm_norm, annot=True,cmap="Greens")
+                plt.show()
 
 
 if __name__ == '__main__':
-    run(Covid = True, feed_back = [["johnson", "amazon",  "politics"],[],[],[]])
+    run(Covid = False, feed_back = [["johnson", "amazon",  "politics"],[],[],[]])
