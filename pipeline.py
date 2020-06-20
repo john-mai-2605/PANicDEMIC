@@ -4,7 +4,7 @@ import Cause_organizer as cause
 import check_classifier as check
 from pickle import dump,load
 
-def run(progress = True, verbose = False, loadFile=False,printtweets=False,causeFilename="causeSunWedFri",outputDivider=900,produceResult=False):
+def run(progress = True, verbose = False, loadFile=False,printtweets=False,causeFilename="causeSunWedFri",outputDivider=900,produceResult=False,chunkScatter=False):
     if progress:
         classifier.run(Covid = True, verbose = verbose) #this gets the reference accuracy
 
@@ -45,7 +45,7 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
             xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
             loading.close()
         else:
-            xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4 = cause.run(verbose = verbose, dates = dates)
+            xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4 = cause.run(verbose = verbose, dates = dates,printtweets=printtweets,chunkScatter=chunkScatter)
             saving=open(causeFilename+".pkl","wb")
             dump((xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4),saving,-1)
             saving.close()
@@ -115,17 +115,26 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         #dates = (["../2020-04-{} Coronavirus Tweets.csv".format(i) for i in range(10,16)]+["../2020-04-0{} Coronavirus Tweets.csv".format(i) for i in range(1,10)])        
         check_classifier.run(verbose = verbose)
 if __name__ == '__main__':
-    run(loadFile=False,printtweets=False,produceResult=True, causeFilename="((cm,-0.4)=0.84)causeSunWed",outputDivider=900)
+    run(loadFile=False,printtweets=True,produceResult=True, chunkScatter=True, causeFilename="((cm,-0.4)=0.84)causeSunWed",outputDivider=900)
     
 """
 The [loadFile] field determines whether you are saving the causes or loading the causes.
-The [printtweets] field determines whether you want the example tweets when doing cause saving. This only takes effect when [loadFile] is true.
+
+The [printtweets] field determines whether you want the example tweets when doing cause saving.
+    -This only takes effect when [loadFile] is False.
+    
 The [produceResult] field determines whether the tweets counts(ex: Anger : 3000, Fear : 1000...) will be displayed.
+    -This only takes effect when [loadFile] is True.
     -It should be put to False if you only want the accuracy result.
+    
 The [causeFilename] field is the name of the file you are going to save/load.
     -BE CAREFUL not to overload the existing file.(Don't worry if you do, it's recoverable.)
+    
 The [outputDivider] is used to deminish the number of example tweets(when printtweets = True).
     -If set to 900, 9000 tweets result will only show top 10 tweets)
+    
+The [chunkScatter] field determines whether to plot the word scatters or not.
+    -This only takes effect when [loadFile] is True.
 
 To test out different cause feedback settings, adjust fb(for feedback causes) and scoreFactor on line 65 and 66.
 """

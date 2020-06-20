@@ -43,9 +43,9 @@ def excommon2(a,b,com3s): # if i in common(a,b) and not in com3s
     return xcommon2
 def run(verbose = False,
         dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],
-        printtweets=False
+        printtweets=False, chunkScatter=False
         ):
-    cause_list=cc.run(verbose=verbose, dates = dates,printtweets=printtweets)
+    cause_list=cc.run(verbose=verbose, dates = dates,printtweets=printtweets,chunkScatter=chunkScatter)
     anger=cause_list[0]
     fear=cause_list[1]
     joy=cause_list[2]
