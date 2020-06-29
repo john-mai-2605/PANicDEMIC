@@ -11,6 +11,7 @@ import extractor
 import nltk
 import seaborn as sn
 import matplotlib.pyplot as plt
+from pickle import load
 
 class Classifier():
         def __init__(self, score, log_prior, num_classes = 4):
@@ -60,6 +61,11 @@ def read_data():
 def run(num_samples = 10000, verbose = False, Covid = False, feed_back = [],sf=0):
         # Extract features
 
+        loading=open("((cm,-0.4)=0.84)causeSunWed.pkl",'rb')
+        xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
+        loading.close()
+        #ext, val_xs, val_ys, count_vectorizer = extractor.run(
+        #        verbose = verbose, num_samples = num_samples, feed_back = [cmFJS, cmAJS, cmAFS, cmAFJ],scoreFactor=-0.4)
         ext, val_xs, val_ys, count_vectorizer = extractor.run(
                 verbose = verbose, num_samples = num_samples, feed_back = feed_back,scoreFactor=sf)
         if Covid:
@@ -78,10 +84,10 @@ def run(num_samples = 10000, verbose = False, Covid = False, feed_back = [],sf=0
         val_cm_norm = confusion_matrix(val_ys, val_preds,normalize="true")
         print("\n[Validation] Accuracy: {}".format(val_accuracy))
         print("\n[Validation] Confusion matrix: \n{}".format(val_cm))
-        if verbose:
-                sn.heatmap(val_cm_norm, annot=True,cmap="Greens")
+        if True:
+                sn.heatmap(val_cm_norm, annot=True,cmap="Greens",xticklabels=["Anger","Fear","Joy","Sadness"],yticklabels=["Anger","Fear","Joy","Sadness"])
                 plt.show()
 
 
 if __name__ == '__main__':
-    run(Covid = False, feed_back = [["johnson", "amazon",  "politics"],[],[],[]])
+    run(Covid = True, feed_back = [["johnson", "amazon",  "politics"],[],[],[]])
