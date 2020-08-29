@@ -1,6 +1,6 @@
 import extractor
 import classifier
-import Cause_organizer as cause 
+import cause_organizer as cause 
 import check_classifier as check
 from pickle import dump,load
 
@@ -41,12 +41,12 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         # Because the cause.run(heavily running code) doesn't run when you loadFile=True, this would be helpful.
         # If you don't have the files or don't have computation power, set loadFile=True and use the preset cause.pkl.
         if loadFile:
-            loading=open(causeFilename+".pkl",'rb')
+            loading=open('output/' + causeFilename + ".pkl", 'rb')
             xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4=load(loading)
             loading.close()
         else:
             xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4 = cause.run(verbose = verbose, dates = dates,printtweets=printtweets,chunkScatter=chunkScatter)
-            saving=open(causeFilename+".pkl","wb")
+            saving=open('output/' + causeFilename + ".pkl", "wb")
             dump((xA, xF, xJ, xS, cmFJS, cmAJS, cmAFS, cmAFJ,_A,_F,_J,_S,cm4),saving,-1)
             saving.close()
 
@@ -64,7 +64,7 @@ def run(progress = True, verbose = False, loadFile=False,printtweets=False,cause
         classifier.run(Covid = True, verbose = verbose, feed_back = [cm4,cm4,cm4,cm4],sf=0)"""
         fb=[cmFJS, cmAJS, cmAFS, cmAFJ]
         scoreFactor=-0.4
-        classifier.run(Covid = True, verbose = verbose, feed_back = fb,sf=scoreFactor)
+        classifier.run(Covid = True, verbose = verbose, feed_back = fb, sf=scoreFactor)
         # ^this part only tries the feedback on evaluation. This is just to show how accurate the classifier we will use on the bottom will be.
         # vThe real work is right below.
 

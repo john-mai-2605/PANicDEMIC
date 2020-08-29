@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 from pickle import load
 def run(num_samples = 30000, num_sentences = 10, outDeminish=4000,
         verbose = False,chunkScatter=False,
-        dates = ["../2020-04-19 Coronavirus Tweets.csv","../2020-04-21 Coronavirus Tweets.csv","../2020-04-22 Coronavirus Tweets.csv"],
+        dates = ["../../2020-04-19 Coronavirus Tweets.csv","../../2020-04-21 Coronavirus Tweets.csv","../../2020-04-22 Coronavirus Tweets.csv"],
         printtweets=False, feedback=[]
         ):
         # the list "avoid" contains manual filtering data

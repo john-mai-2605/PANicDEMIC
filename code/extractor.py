@@ -11,7 +11,7 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 import matplotlib.pyplot as plt
 def get_data():
     pattern = re.compile('\W')
-    df = pd.read_csv("Tweets_crosstab.csv", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
+    df = pd.read_csv("../train_data/Tweets_crosstab.csv", sep='\t', header=None, engine='python', skiprows=2, encoding = "utf-16")
     # Dataset is now stored in a Pandas Dataframe
     anger_feats = list(df[1][df[2].notnull()])
     fear_feats = list(df[1][df[3].notnull()])
@@ -158,4 +158,4 @@ def run(num_samples=10000, verbose=False, feed_back = [], scoreFactor=0):
     return fe, val_xs, val_ys, count_vectorizer
 
 if __name__ == '__main__':
-    run(feed_back=[["Hey"],[],[],[]])
+    run(feed_back=[["Hey"],[],[],[]], verbose = True)
